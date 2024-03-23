@@ -9,7 +9,7 @@
 
 .top-bar{
     display: flex;
-    justify-content: center-between;
+    justify-content: center;
     gap: 14px;
     padding-top: 60px;
 }
@@ -38,7 +38,6 @@
     background: #ebfffc;
     border-radius: 40px;
     cursor: pointer;
-    margin-left: 10px;
 }
 
 .weather-image{
