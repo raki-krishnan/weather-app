@@ -33,7 +33,7 @@ const WeatherApp = () => {
 
         humidity[0].innerHTML = data.main.humidity + "%";
         wind[0].innerHTML = data.wind.speed + " mph";
-        temperature[0].innerHTML = Math.floor(data.main.temp - 273) + "°F";
+        temperature[0].innerHTML = Math.floor((data.main.temp - 273.15) * 9/5 + 32) + "°F";
         location[0].innerHTML = data.name;
 
         if(data.weather[0].icon==="01d" || data.weather[0].icon==="01n"){
@@ -66,7 +66,16 @@ const WeatherApp = () => {
     return (
         <div className = "container">
             <div className="top-bar">
-                <input type="text" className="cityInput" placeholder = "Search"/>
+            <input 
+                type="text" 
+                className="cityInput" 
+                placeholder = "Search"
+                onKeyPress={(event) => {
+                    if (event.key === 'Enter') {
+                        search();
+                    }
+                }}
+            />
                 <div className = "search-icon" onClick={()=>{search()}}>
                     <img src={search_icon} alt="search"/>
                 </div>
