@@ -8,6 +8,7 @@ import humidity_icon from "../Assets/humidity.png";
 import drizzle_icon from "../Assets/drizzle.png";
 import clear_icon from "../Assets/clear.png";
 import wind_icon from "../Assets/wind.png";
+import thunderstorm_icon from "../Assets/thunderstorm.png";
 
 const WeatherApp = () => {
 
@@ -46,15 +47,21 @@ const WeatherApp = () => {
                 case "02n":
                 case "03d":
                 case "03n":
-                    setWicon(cloud_icon);
-                    break;
                 case "04d":
                 case "04n":
+                    setWicon(cloud_icon);
+                    break;
                 case "09d":
                 case "09n":
+                    setWicon(drizzle_icon);
+                    break;
                 case "10d":
                 case "10n":
                     setWicon(rain_icon);
+                    break;
+                case "11d":
+                case "11n":
+                    setWicon(thunderstorm_icon);
                     break;
                 case "13d":
                 case "13n":
