@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './WeatherApp.css';
 import search_icon from "../Assets/search.png";
 import cloud_icon from "../Assets/cloud.png";
@@ -16,13 +16,12 @@ const WeatherApp = () => {
 
     const [wicon, setWicon] = useState(cloud_icon);
 
-    const search = async ()  => {
+    useEffect(() => {
+        fetchWeatherData("Ann Arbor");
+    }, []); // Empty array as second argument to run this effect only once after the initial render
 
-
-        if (element[0].value === "") {
-            return 0;
-        }
-        let url = `https://api.openweathermap.org/data/2.5/weather?q=${element[0].value}&appid=${api_key}`;
+    const fetchWeatherData = async (city) => {
+        let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${api_key}`;
 
         let response = await fetch(url);
         let data = await response.json();
@@ -36,47 +35,58 @@ const WeatherApp = () => {
         temperature[0].innerHTML = Math.floor((data.main.temp - 273.15) * 9/5 + 32) + "°F";
         location[0].innerHTML = data.name;
 
-        if(data.weather[0].icon==="01d" || data.weather[0].icon==="01n"){
-            setWicon(clear_icon);
+        // Set weather icon based on weather condition
+        if(data.weather && data.weather[0].icon) {
+            switch(data.weather[0].icon) {
+                case "01d":
+                case "01n":
+                    setWicon(clear_icon);
+                    break;
+                case "02d":
+                case "02n":
+                case "03d":
+                case "03n":
+                    setWicon(cloud_icon);
+                    break;
+                case "04d":
+                case "04n":
+                case "09d":
+                case "09n":
+                case "10d":
+                case "10n":
+                    setWicon(rain_icon);
+                    break;
+                case "13d":
+                case "13n":
+                    setWicon(snow_icon);
+                    break;
+                default:
+                    setWicon(cloud_icon);
+            }
         }
-        else if(data.weather[0].icon==="02d" || data.weather[0].icon==="02n"){
-            setWicon(cloud_icon);
-        }
-        else if(data.weather[0].icon==="03d" || data.weather[0].icon==="03n"){
-            setWicon(drizzle_icon);
-        }
-        else if(data.weather[0].icon==="04d" || data.weather[0].icon==="04n"){
-            setWicon(drizzle_icon);
-        }
-        else if(data.weather[0].icon==="09d" || data.weather[0].icon==="09n"){
-            setWicon(rain_icon);
-        }
-        else if(data.weather[0].icon==="10d" || data.weather[0].icon==="10n"){
-            setWicon(rain_icon);
-        }
-        else if(data.weather[0].icon==="13d" || data.weather[0].icon==="13n"){
-            setWicon(snow_icon);
-        }
-        else{
-            setWicon(clear_icon);
-        }
-    }
+    };
 
+    const search = () => {
+        if (element[0].value === "") {
+            return;
+        }
+        fetchWeatherData(element[0].value);
+    };
 
     return (
-        <div className = "container">
+        <div className="container">
             <div className="top-bar">
-            <input 
-                type="text" 
-                className="cityInput" 
-                placeholder = "Search"
-                onKeyPress={(event) => {
-                    if (event.key === 'Enter') {
-                        search();
-                    }
-                }}
-            />
-                <div className = "search-icon" onClick={()=>{search()}}>
+                <input 
+                    type="text" 
+                    className="cityInput" 
+                    placeholder="Search"
+                    onKeyPress={(event) => {
+                        if (event.key === 'Enter') {
+                            search();
+                        }
+                    }}
+                />
+                <div className="search-icon" onClick={search}>
                     <img src={search_icon} alt="search"/>
                 </div>
             </div>
@@ -84,21 +94,21 @@ const WeatherApp = () => {
                 <img src={wicon} alt="cloud"/>
             </div>
             <div className="weather-temp">
-                24°F
+                24°F {/* Default temperature placeholder */}
             </div>
-            <div className="weather-location">London</div>
+            <div className="weather-location">Ann Arbor</div> {/* Default location */}
             <div className="data-container">
                 <div className="element">
                     <img src={humidity_icon} alt="" className="icon" />
                     <div className="data">
-                        <div className="humidity-percentage">64%</div>
+                        <div className="humidity-percentage">64%</div> {/* Default humidity */}
                         <div className="text">Humidity</div>
                     </div>
                 </div>
                 <div className="element">
                     <img src={wind_icon} alt="" className="icon" />
                     <div className="data">
-                        <div className="wind-speed">5 mph</div>
+                        <div className="wind-speed">10 mph</div> {/* Default wind speed */}
                         <div className="text">Wind Speed</div>
                     </div>
                 </div>
