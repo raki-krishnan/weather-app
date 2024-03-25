@@ -100,3 +100,17 @@
     height: 250px;
     object-fit: contain;
 }
+
+.lucky-button {
+    height: 39px;
+    margin-left: 14px;
+    margin-top: 30px;
+    margin-bottom: 5px;
+    padding: 0 20px;
+    border: none;
+    border-radius: 40px;
+    background-color: #ebfffc;
+    color: #626262;
+    font-size: 20px;
+    cursor: pointer;
+}

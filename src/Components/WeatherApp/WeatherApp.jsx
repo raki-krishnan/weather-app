@@ -17,6 +17,27 @@ import nightsnow_icon from "../Assets/nightsnow.png";
 
 const WeatherApp = () => {
 
+    const cities = ["Tokyo", "New York", "London", "Paris", "Sydney", 
+    "Moscow", "Cairo", "Rio de Janeiro", "Toronto", "Beijing", "Berlin", "Rome", "Madrid",
+    "Dubai", "Seoul", "Istanbul", "Mumbai", "Bangkok", "Los Angeles", "Chicago", "Miami",
+    "Las Vegas", "San Francisco", "Washington", "Boston", "Seattle", "Dallas", "Houston",
+    "Atlanta", "Philadelphia", "Phoenix", "Denver", "Minneapolis", "Detroit", "Honolulu",
+    "Anchorage", "Mexico City", "Buenos Aires", "Sao Paulo", "Cape Town", "Johannesburg",
+    "Nairobi", "Copenhagen", "Stockholm", "Oslo", "Helsinki", "Warsaw", "Prague", "Vienna",
+    "Budapest", "Athens", "Melbourne", "Edinburgh", "St. Petersburg", "Kiev", "Minsk", "Pretoria",
+    "New Delhi", "Chennai", "Bombay", "Cologne", "Frankfurt", "Zurich", "Geneva", " Bogota",
+    "Lima", "Caracas", "Santiago", "Cancun", "Quito", "Guayaquil", "La Paz", "Asuncion",
+    "San Diego", "San Antonio", "San Jose", "New Orleans", "Portland", "Salt Lake City",
+    "Barcelona", "Venice", "Milan", "Amsterdam", "Brussels", "Dublin", "Lisbon", "Bucharest",
+    "Shanghai", "Hong Kong", "Singapore", "Kuala Lumpur", "Jakarta", "Manila", "Hanoi"];
+
+    const fetchRandomWeather = () => {
+        const randomIndex = Math.floor(Math.random() * cities.length);
+        const randomCity = cities[randomIndex];
+        fetchWeatherData(randomCity);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    };
+
     let api_key = "b619c02ef0d0c5ea4a66d9ddf680e09f";
     const element = document.getElementsByClassName("cityInput");
 
@@ -147,6 +168,7 @@ const WeatherApp = () => {
                     </div>
                 </div>
             </div>
+            <button className="lucky-button" onClick={fetchRandomWeather}>I'm Feeling Lucky</button>
         </div>
     )
 }
