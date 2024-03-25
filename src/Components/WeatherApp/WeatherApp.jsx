@@ -9,7 +9,11 @@ import drizzle_icon from "../Assets/drizzle.png";
 import clear_icon from "../Assets/clear.png";
 import wind_icon from "../Assets/wind.png";
 import thunderstorm_icon from "../Assets/thunderstorm.png";
-
+import nightrain_icon from "../Assets/nightrain.png";
+import nightclear_icon from "../Assets/nightclear.png";
+import nightcloud_icon from "../Assets/nightcloud.png";
+import nightthunderstorm_icon from "../Assets/nightthunderstorm.png";
+import nightsnow_icon from "../Assets/nightsnow.png";
 
 const WeatherApp = () => {
 
@@ -46,32 +50,44 @@ const WeatherApp = () => {
             if(data.weather && data.weather[0].icon) {
                 switch(data.weather[0].icon) {
                     case "01d":
-                    case "01n":
                         setWicon(clear_icon);
                         break;
+                    case "01n":
+                        setWicon(nightclear_icon);
+                        break;
                     case "02d":
-                    case "02n":
                     case "03d":
-                    case "03n":
                     case "04d":
-                    case "04n":
                         setWicon(cloud_icon);
                         break;
+                    case "02n":
+                    case "03n":
+                    case "04n":
+                        setWicon(nightcloud_icon);
+                        break;
                     case "09d":
-                    case "09n":
                         setWicon(drizzle_icon);
                         break;
+                    case "09n":
+                        setWicon(nightrain_icon);
+                        break;
                     case "10d":
-                    case "10n":
                         setWicon(rain_icon);
                         break;
+                    case "10n":
+                        setWicon(nightrain_icon);
+                        break;
                     case "11d":
-                    case "11n":
                         setWicon(thunderstorm_icon);
                         break;
+                    case "11n":
+                        setWicon(nightthunderstorm_icon);
+                        break;
                     case "13d":
-                    case "13n":
                         setWicon(snow_icon);
+                        break;
+                    case "13n":
+                        setWicon(nightsnow_icon);
                         break;
                     default:
                         setWicon(cloud_icon);
@@ -109,7 +125,7 @@ const WeatherApp = () => {
             </div>
             {error && <div className="error">{error}</div>}
             <div className="weather-image">
-                <img src={wicon} alt="cloud"/>
+                <img src={wicon} alt="cloud" className="main-icon"/>
             </div>
             <div className="weather-temp">
                 24°F
