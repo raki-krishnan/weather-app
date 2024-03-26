@@ -17,6 +17,9 @@ import nightsnow_icon from "../Assets/nightsnow.png";
 
 const WeatherApp = () => {
 
+    const [wicon, setWicon] = useState(cloud_icon);
+    const [error, setError] = useState("");
+    
     const cities = ["Tokyo", "New York", "London", "Paris", "Sydney", 
     "Moscow", "Cairo", "Rio de Janeiro", "Toronto", "Beijing", "Berlin", "Rome", "Madrid",
     "Dubai", "Seoul", "Istanbul", "Mumbai", "Bangkok", "Los Angeles", "Chicago", "Miami",
@@ -29,7 +32,8 @@ const WeatherApp = () => {
     "Lima", "Caracas", "Santiago", "Cancun", "Quito", "Guayaquil", "La Paz", "Asuncion",
     "San Diego", "San Antonio", "San Jose", "New Orleans", "Portland", "Salt Lake City",
     "Barcelona", "Venice", "Milan", "Amsterdam", "Brussels", "Dublin", "Lisbon", "Bucharest",
-    "Shanghai", "Hong Kong", "Singapore", "Kuala Lumpur", "Jakarta", "Manila", "Hanoi"];
+    "Shanghai", "Hong Kong", "Singapore", "Kuala Lumpur", "Jakarta", "Manila", "Hanoi", 
+    "Normandy", "Taipei", "Auckland", "Wellington", "Christchurch", "Brisbane", "Perth"];
 
     const fetchRandomWeather = () => {
         const randomIndex = Math.floor(Math.random() * cities.length);
@@ -38,11 +42,39 @@ const WeatherApp = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     };
 
+    const whereElseInTheWorld = async () => {
+        //We want to show the weather of a different city with the same temperature as the current city
+        const temperature = document.getElementsByClassName("weather-temp")[0].innerHTML;
+        console.log(temperature);
+        const currentCity = document.getElementsByClassName("weather-location")[0].innerHTML;
+        console.log(currentCity);
+        let randomCity = "";
+        let randomIndex = 0;
+        let found = false;
+        const startTime = Date.now(); // Get the current time at the start of the loop
+        while (!found) {
+            console.log("found before: " + found)
+            randomIndex = Math.floor(Math.random() * cities.length);
+            randomCity = cities[randomIndex];
+            console.log(randomCity);
+            await fetchWeatherData(randomCity);
+            console.log("getElembyclass : " + document.getElementsByClassName("weather-temp")[0].innerHTML)
+            if (document.getElementsByClassName("weather-temp")[0].innerHTML === temperature && randomCity !== currentCity) {
+                found = true;
+            }
+            console.log(document.getElementsByClassName("weather-temp")[0].innerHTML);
+            console.log(found);
+            if (Date.now() - startTime > 10000) { // If more than 10 seconds have passed
+                console.log("Time's up! Displaying the original city.");
+                fetchWeatherData(currentCity); // Fetch the weather data for the original city
+                break; // Break the loop
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    };
+
     let api_key = "b619c02ef0d0c5ea4a66d9ddf680e09f";
     const element = document.getElementsByClassName("cityInput");
-
-    const [wicon, setWicon] = useState(cloud_icon);
-    const [error, setError] = useState("");
 
     useEffect(() => {
         fetchWeatherData("Ann Arbor");
@@ -67,6 +99,7 @@ const WeatherApp = () => {
             wind[0].innerHTML = data.wind.speed + " mph";
             temperature[0].innerHTML = Math.floor((data.main.temp - 273.15) * 9/5 + 32) + "°F";
             location[0].innerHTML = data.name;
+            console.log("HELLOOOOO " + data.name)
 
             if(data.weather && data.weather[0].icon) {
                 switch(data.weather[0].icon) {
@@ -116,7 +149,7 @@ const WeatherApp = () => {
             }
         } catch (error) {
             setError("City not found");
-            setTimeout(() => setError(""), 3000); // Clear error after 3 seconds
+            setTimeout(() => setError(""), 3000);
         }
     };
 
@@ -145,13 +178,19 @@ const WeatherApp = () => {
                 </div>
             </div>
             {error && <div className="error">{error}</div>}
-            <div className="weather-image">
-                <img src={wicon} alt="cloud" className="main-icon"/>
+            <div className="weather-info-container">
+                <div className="weather-image">
+                    <img src={wicon} alt="cloud" className="main-icon" />
+                </div>
+                
+                <div className="weather-details-button-container">
+                    <div className="weather-details">
+                        <div className="weather-temp">57°F</div>
+                        <div className="weather-location">Ann Arbor</div>
+                    </div>
+                    <button className="where-else" onClick={whereElseInTheWorld}>Twin</button>
+                </div>
             </div>
-            <div className="weather-temp">
-                24°F
-            </div>
-            <div className="weather-location">Ann Arbor</div>
             <div className="data-container">
                 <div className="element">
                     <img src={humidity_icon} alt="" className="icon" />

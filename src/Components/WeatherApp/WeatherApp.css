@@ -114,3 +114,38 @@
     font-size: 20px;
     cursor: pointer;
 }
+
+.weather-info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.weather-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+.weather-details-button-container {
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.where-else{
+    position: absolute;
+    right: 20px; 
+    top: 50%; 
+    transform: translateY(-50%);
+    margin-top: 0;
+    color: white;
+    font-size: 20px;
+    font-weight: 400;
+    background-color: transparent;
+    cursor: pointer;
+}
