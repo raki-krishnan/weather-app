@@ -164,7 +164,19 @@
     border: 2px solid white; 
     border-radius: 40px; 
     height: 39px; 
-    line-height: 35px; 
+    line-height: 35px; .unit-button {
+        padding: 5px;
+        margin: 0;
+        background: none;
+        border: none;
+        color: inherit; /* The button text color will inherit from the parent */
+        font-size: 0.8em; /* Adjust the font size as needed */
+        cursor: pointer;
+    }
+    
+    .unit-button:focus {
+        outline: none;
+    }
     transition: background-color 0.3s, color 0.3s; 
     text-align: center; 
 }
@@ -173,3 +185,5 @@
     background-color: white; /* Change color on hover to match '.lucky-button' */
     color: #130754; /* Text color on hover to match '.lucky-button', adjust as needed */
 }
+
+

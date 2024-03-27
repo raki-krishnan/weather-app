@@ -23,7 +23,9 @@ const WeatherApp = () => {
     const [cities, setCities] = useState([]);
     const [error, setError] = useState(null); 
     const [loading, setLoading] = useState(true);
-    const [currentGradient, setCurrentGradient] = useState(0);   
+    const [currentGradient, setCurrentGradient] = useState(0);
+    const [isFahrenheit, setIsFahrenheit] = useState(true);
+    const [temperature, setTemperature] = useState('...');
     
     const citiesList = ["Tokyo", "New York", "London", "Paris", "Sydney", 
     "Moscow", "Cairo", "Rio de Janeiro", "Toronto", "Beijing", "Berlin", "Rome", "Madrid",
@@ -63,7 +65,7 @@ const WeatherApp = () => {
     "Farmington Hills", "West Bloomfield", "Troy", "Novi", "Royal Oak", "Birmingham", "Southfield", "Livonia",
     "Salvador", "Betis", "Girona", "Vigo", "Granada", "Alicante", "Cordoba", "Valladolid", "Bilbao",
     "San Sebastian", "Santander", "Oviedo", "Pamplona", "Logrono", "Zaragoza", "Villereal", "Malaga",
-    "Prades", "Tarragona", "Lleida", "Reus", "Terrassa", "Sabadell", "Badalona", "Mataro", "Gava",
+    "Guatemala", "Tarragona", "Lleida", "Reus", "Terrassa", "Sabadell", "Badalona", "Mataro", "Gava",
     "Nice", "Lyon", "Marseille", "Toulouse", "Bordeaux", "Nantes", "Rennes", "Lille", "Strasbourg",
     "Hyderabad", "Goa", "Kerala", "Jaipur", "Lucknow", "Kanpur", "Nagpur", "Odisha", "Patna", "Punjab",
     "West Bengal", "Srinagar", "Agra", "Allahabad", "Amritsar", "Bhopal", "Chandigarh", "Dehradun",
@@ -392,7 +394,25 @@ const WeatherApp = () => {
           // Change the background gradient
           setCurrentGradient((current) => (current + 1) % gradients.length);
         }
-      };
+    };
+
+
+    const toggleTemperatureUnit = () => {
+        setIsFahrenheit(!isFahrenheit); // Toggle the temperature unit state
+        // Assuming `weather-temp` contains the temperature value like '45°F' or '7°C'
+        const currentTemp = document.getElementsByClassName('weather-temp')[0].innerHTML;
+        let newTemp;
+        if (isFahrenheit) {
+            // Convert to Celsius
+            const tempInFahrenheit = parseFloat(currentTemp);
+            newTemp = ((tempInFahrenheit - 32) * 5/9).toFixed(0) + '°C';
+        } else {
+            // Convert to Fahrenheit
+            const tempInCelsius = parseFloat(currentTemp);
+            newTemp = (tempInCelsius * 9/5 + 32).toFixed(0) + '°F';
+        }
+        document.getElementsByClassName('weather-temp')[0].innerHTML = newTemp;
+    };
     
     useEffect(() => {
         loadCities();
@@ -441,36 +461,39 @@ const WeatherApp = () => {
     let api_key = "b619c02ef0d0c5ea4a66d9ddf680e09f";
     const element = document.getElementsByClassName("cityInput");
 
+
+
+    
     const whereElseInTheWorld = async () => {
-        //We want to show the weather of a different city with the same temperature as the current city
-        const temperature = document.getElementsByClassName("weather-temp")[0].innerHTML;
-        console.log(temperature);
-        const currentCity = document.getElementsByClassName("weather-location")[0].innerHTML;
-        console.log(currentCity);
-        let randomCity = "";
-        let randomIndex = 0;
+        // Get the current temperature in a state that doesn't change on re-render
+        const currentTemp = temperature; 
+        let currentCity = document.getElementsByClassName("weather-location")[0].innerHTML.split(",")[0];
+    
         let found = false;
         const startTime = Date.now(); // Get the current time at the start of the loop
+    
         while (!found) {
-            console.log("found before: " + found)
-            randomIndex = Math.floor(Math.random() * citiesList.length);
-            randomCity = citiesList[randomIndex];
-            console.log(randomCity);
-            await fetchWeatherData(randomCity);
-            console.log("getElembyclass : " + document.getElementsByClassName("weather-temp")[0].innerHTML)
-            if (document.getElementsByClassName("weather-temp")[0].innerHTML === temperature && randomCity !== currentCity) {
-                found = true;
-            }
-            console.log(document.getElementsByClassName("weather-temp")[0].innerHTML);
-            console.log(found);
             if (Date.now() - startTime > 10000) { // If more than 10 seconds have passed
                 console.log("Time's up! Displaying the original city.");
                 fetchWeatherData(currentCity); // Fetch the weather data for the original city
                 break; // Break the loop
             }
+    
+            const randomIndex = Math.floor(Math.random() * citiesList.length);
+            const randomCity = citiesList[randomIndex];
+            
+            if (randomCity !== currentCity) {
+                // eslint-disable-next-line no-loop-func
+                await fetchWeatherData(randomCity, (fetchedTemperature) => {
+                    if (`${fetchedTemperature}°${isFahrenheit ? 'F' : 'C'}` === currentTemp) {
+                        found = true;
+                    }
+                });
+            }
+            
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     };
+    
 
     const fetchWeatherData = async (city, onSuccess, onError) => {
         const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${api_key}`;
@@ -487,17 +510,21 @@ const WeatherApp = () => {
     
             const data = await response.json();
             console.log(data);
-            const cityTemperature = Math.floor((data.main.temp - 273.15) * 9/5 + 32);
+            const tempInCelsius = data.main.temp - 273.15;
+            const cityTemperature = isFahrenheit
+            ? Math.floor(tempInCelsius * 9/5 + 32) // Convert to Fahrenheit if isFahrenheit is true
+            : Math.floor(tempInCelsius); // Keep as Celsius otherwise
+            setTemperature(`${cityTemperature}°${isFahrenheit ? 'F' : 'C'}`);
     
             // Update the UI with the new data
             const humidity = document.getElementsByClassName("humidity-percentage");
             const wind = document.getElementsByClassName("wind-speed");
-            const temperature = document.getElementsByClassName("weather-temp");
             const location = document.getElementsByClassName("weather-location");
     
             humidity[0].innerHTML = data.main.humidity + "%";
             wind[0].innerHTML = data.wind.speed + " mph";
-            temperature[0].innerHTML = cityTemperature + "°F";
+
+            // temperature.innerHTML = `${cityTemperature}°${isFahrenheit ? 'F' : 'C'}`;
             location[0].innerHTML = data.name + ", " + countryCodes[data.sys.country];
             adjustTextSize('weather-location', 50, 1); // Initial size = 60, step = 1
     
@@ -595,7 +622,12 @@ const WeatherApp = () => {
                 </div>
                 <div className="weather-details-button-container">
                     <div className="weather-details">
-                        <div className="weather-temp">...</div>
+                        <div className="weather-temp">
+                            {temperature}
+                        </div>
+                        <button onClick={toggleTemperatureUnit}>
+                                {isFahrenheit ? '°C' : '°F'}
+                        </button>
                         <div className="weather-location" ref={weatherLocationRef}>Ann Arbor, USA</div>
                     </div>
                     <button className="where-else" onClick={whereElseInTheWorld}>Twin</button>
