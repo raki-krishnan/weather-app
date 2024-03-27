@@ -107,16 +107,23 @@
 
 .lucky-button {
     height: 39px;
-    margin-left: 14px;
-    margin-top: 30px;
-    margin-bottom: 5px;
+    margin-top: 35px;
+    margin-bottom: 15px;
     padding: 0 20px;
-    border: none;
+    border: 2px solid white; /* Adjust the border size and color to match the 'Twin' button */
     border-radius: 40px;
-    background-color: #ebfffc;
-    color: #626262;
+    background-color: transparent;
+    color: white;
     font-size: 20px;
     cursor: pointer;
+    outline: none; /* Remove outline on focus for aesthetic reasons */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
+    transform: translateY(-50%);
+}
+
+.lucky-button:hover {
+    background-color: white; /* Change color on hover */
+    color: #130754; /* Text color on hover, adjust as needed */
 }
 
 .weather-info-container {
@@ -142,7 +149,7 @@
     width: 100%;
 }
 
-.where-else{
+.where-else {
     position: absolute;
     right: 20px; 
     top: 50%; 
@@ -153,4 +160,16 @@
     font-weight: 400;
     background-color: transparent;
     cursor: pointer;
+    padding: 0 20px; 
+    border: 2px solid white; 
+    border-radius: 40px; 
+    height: 39px; 
+    line-height: 35px; 
+    transition: background-color 0.3s, color 0.3s; 
+    text-align: center; 
+}
+
+.where-else:hover {
+    background-color: white; /* Change color on hover to match '.lucky-button' */
+    color: #130754; /* Text color on hover to match '.lucky-button', adjust as needed */
 }

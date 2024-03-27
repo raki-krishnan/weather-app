@@ -21,7 +21,9 @@ const WeatherApp = () => {
 
     const [wicon, setWicon] = useState(cloud_icon);
     const [cities, setCities] = useState([]);
-    const [error, setError] = useState("");    
+    const [error, setError] = useState(null); 
+    const [loading, setLoading] = useState(true);
+    const [currentGradient, setCurrentGradient] = useState(0);   
     
     const citiesList = ["Tokyo", "New York", "London", "Paris", "Sydney", 
     "Moscow", "Cairo", "Rio de Janeiro", "Toronto", "Beijing", "Berlin", "Rome", "Madrid",
@@ -58,7 +60,21 @@ const WeatherApp = () => {
     "New Mexico", "Urbana", "Anaheim", "Berkeley", "Cambridge", "Chapel Hill", "Columbia", "Davis", 
     "Gainesville", "Montreal", "Quebec City", "Vancouver", "Calgary", "Edmonton", "Ottawa", "Winnipeg",
     "Halifax", "St. John's", "Regina", "Saskatoon", "Victoria", "Fredericton", "Charlottetown", "Whitehorse",
-    "Farmington Hills", "West Bloomfield", "Troy", "Novi", "Royal Oak", "Birmingham", "Southfield", "Livonia",];
+    "Farmington Hills", "West Bloomfield", "Troy", "Novi", "Royal Oak", "Birmingham", "Southfield", "Livonia",
+    "Salvador", "Betis", "Girona", "Vigo", "Granada", "Alicante", "Cordoba", "Valladolid", "Bilbao",
+    "San Sebastian", "Santander", "Oviedo", "Pamplona", "Logrono", "Zaragoza", "Villereal", "Malaga",
+    "Prades", "Tarragona", "Lleida", "Reus", "Terrassa", "Sabadell", "Badalona", "Mataro", "Gava",
+    "Nice", "Lyon", "Marseille", "Toulouse", "Bordeaux", "Nantes", "Rennes", "Lille", "Strasbourg",
+    "Hyderabad", "Goa", "Kerala", "Jaipur", "Lucknow", "Kanpur", "Nagpur", "Odisha", "Patna", "Punjab",
+    "West Bengal", "Srinagar", "Agra", "Allahabad", "Amritsar", "Bhopal", "Chandigarh", "Dehradun",
+    "Busan", "Daegu", "Incheon", "Gwangju", "Daejeon", "Ulsan", "Jeju", "Sejong", "Suwon", "Goyang",
+    "Jerusalem", "Tel Aviv", "Haifa", "Rishon LeZion", "Rabat", "Casablanca", "Fes", "Tangier", "Marrakesh",
+    "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi",
+    "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "Oklahoma",
+    "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah",
+    "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming", "Alabama", "Alaska", "Arizona",
+    "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho",
+    "Illinois", "Indiana", "Iowa", "Kansas", "Kathmandu", "Pokhara", "Biratnagar", "Birgunj", "Butwal", "Hetauda",];
 
 
 
@@ -180,8 +196,8 @@ const WeatherApp = () => {
         'KI': 'Kiribati',
         'KM': 'Comoros',
         'KN': 'St. Kitts and Nevis',
-        'KP': 'Korea, Democratic People\'s Republic of',
-        'KR': 'Korea, Republic of',
+        'KP': 'North Korea',
+        'KR': 'South Korea',
         'KW': 'Kuwait',
         'KY': 'Cayman Islands',
         'KZ': 'Kazakhstan',
@@ -295,7 +311,7 @@ const WeatherApp = () => {
         'VE': 'Venezuela',
         'VG': 'British Virgin Islands',
         'VI': 'Virgin Islands',
-        'VN': 'Viet Nam',
+        'VN': 'Vietnam',
         'VU': 'Vanuatu',
         'WF': 'Wallis & Futuna Islands',
         'WS': 'Samoa',
@@ -310,6 +326,29 @@ const WeatherApp = () => {
         'ZZ': 'Unknown or unspecified country',
     }
 
+    const gradients = [
+        'linear-gradient(180deg, #130754 0%, #3b2f80 100%)',               // Dark violet to dark blue
+        'linear-gradient(180deg, #ff758c 0%, #ff7eb3 100%)',               // Pink to light pink
+        'linear-gradient(180deg, #00bf8f 0%, #001510 100%)',               // Green to dark green
+        'linear-gradient(180deg, #4facfe 0%, #00f2fe 100%)',               // Sky blue to light blue
+        'linear-gradient(180deg, #5ee7df 0%, #b490ca 100%)',               // Light blue to light violet
+        'linear-gradient(180deg, #0f2027 0%, #203a43 50%, #2c5364 100%)', // Deep blue to gray
+        'linear-gradient(180deg, #232526 0%, #414345 100%)',               // Dark slate
+        'linear-gradient(180deg, #414345 0%, #232526 100%)',               // Dark slate to lighter slate
+        'linear-gradient(180deg, #4b6cb7 0%, #182848 100%)',               // Mid blue to dark blue
+        'linear-gradient(180deg, #1f1c2c 0%, #928dab 100%)',               // Dark violet to mid-light violet
+        'linear-gradient(180deg, #3a1c71 0%, #d76d77 50%, #ffaf7b 100%)',  // Purple to rosy pink to light peach
+        'linear-gradient(180deg, #0f0c29 0%, #302b63 50%, #24243e 100%)',  // Dark violet to dark slate
+        'linear-gradient(180deg, #16222a 0%, #3a6073 100%)',               // Dark slate to steel blue
+        'linear-gradient(180deg, #1e3c72 0%, #2a5298 100%)',               // Dark blue to lighter blue
+        'linear-gradient(180deg, #1e130c 0%, #9a8478 100%)',               // Dark brown to dusty gray
+        'linear-gradient(180deg, #000000 0%, #434343 100%)',               // Black to mid-gray
+        'linear-gradient(180deg, #2b5876 0%, #4e4376 100%)',               // Dark blue to dark purple
+        'linear-gradient(180deg, #00467f 0%, #a5cc82 100%)',               // Dark azure to pale leaf
+        'linear-gradient(180deg, #614385 0%, #516395 100%)',               // Dusky purple to dusky blue
+        'linear-gradient(180deg, #29323c 0%, #485563 100%)',               // Charcoal to slate blue
+        'linear-gradient(180deg, #1c92d2 0%, #f2fcfe 50%, #1c92d2 100%)'   // Sky blue to light mist (white text visible in darker areas)
+      ];
     
     function adjustTextSize(id, initialFontSize, step) {
         const element = document.getElementById(id);
@@ -349,10 +388,18 @@ const WeatherApp = () => {
             console.log("No data in CSV");
         }
     };
+
+    const handleContainerClick = (event) => {
+        // Check if the click is not on an input or button
+        if (event.target.tagName !== 'INPUT' && event.target.tagName !== 'BUTTON') {
+          // Change the background gradient
+          setCurrentGradient((current) => (current + 1) % gradients.length);
+        }
+      };
     
     useEffect(() => {
         loadCities();
-        fetchWeatherData("Ann Arbor");
+        fetchWeatherData("Ann Arbor").catch(console.error);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -396,55 +443,6 @@ const WeatherApp = () => {
     let api_key = "b619c02ef0d0c5ea4a66d9ddf680e09f";
     const element = document.getElementsByClassName("cityInput");
 
-    // const whereElseInTheWorld = async () => {
-    //     const currentCity = document.getElementsByClassName("weather-location")[0].innerHTML;
-    //     const currentCityTemperature = document.getElementsByClassName("weather-temp")[0].innerHTML;;
-    
-    //     // A helper function to delay the loop execution
-    //     const delay = ms => new Promise(res => setTimeout(res, ms));
-    
-    //     // Assuming cities is an array of city objects with a city name property
-    //     const maxAttempts = cities.length;
-    //     const attemptIntervalMs = 10; // Delay between attempts in milliseconds
-    
-    //     for (let i = 0; i < maxAttempts; i++) {
-    //         const randomIndex = Math.floor(Math.random() * cities.length);
-    //         const city = cities[randomIndex].city;
-    
-    //         // Avoid re-checking the current city
-    //         if (city === currentCity) {
-    //             continue;
-    //         }
-    
-    //         try {
-    //             // You will call the fetchWeatherData function with a callback
-    //             const checkTemperatureMatch = (onSuccess, onError) => {
-    //                 fetchWeatherData(city, onSuccess, onError);
-    //             };
-    
-    //             await new Promise((resolve, reject) => {
-    //                 checkTemperatureMatch(() => {
-    //                     // If the temperature matches, we resolve the promise
-    //                     if (currentCityTemperature === currentTemp) {
-    //                         resolve();
-    //                     } else {
-    //                         // Otherwise, we reject and try the next city after a delay
-    //                         setTimeout(() => reject(), attemptIntervalMs);
-    //                     }
-    //                 }, () => {
-    //                     // If the API call fails, we try the next city after a delay
-    //                     setTimeout(() => reject(), attemptIntervalMs);
-    //                 });
-    //             });
-    
-    //             // If we've found a match, we break out of the loop
-    //             break;
-    //         } catch {
-    //             // Continue to the next iteration after a delay
-    //             await delay(attemptIntervalMs);
-    //         }
-    //     }
-    // };
     const whereElseInTheWorld = async () => {
         //We want to show the weather of a different city with the same temperature as the current city
         const temperature = document.getElementsByClassName("weather-temp")[0].innerHTML;
@@ -478,6 +476,9 @@ const WeatherApp = () => {
 
     const fetchWeatherData = async (city, onSuccess, onError) => {
         const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${api_key}`;
+
+        setLoading(true);
+        setError(null);
     
         try {
             const response = await fetch(url);
@@ -552,10 +553,10 @@ const WeatherApp = () => {
             if (onSuccess) {
                 onSuccess(cityTemperature); 
             }
+            setLoading(false); 
         } catch (error) {
             console.error(error);
-            setError("City not found");
-            setTimeout(() => setError(""), 3000);
+            setLoading(false);
             if (onError) {
                 onError();
             }
@@ -570,7 +571,8 @@ const WeatherApp = () => {
     };
 
     return (
-        <div className="container">
+        <div className="container" onClick={handleContainerClick} style={{ backgroundImage: gradients[currentGradient] }}>
+            {loading && <div className="loading">Loading...</div>}
             <div className="top-bar">
                 <input 
                     type="text" 
@@ -589,29 +591,28 @@ const WeatherApp = () => {
             {error && <div className="error">{error}</div>}
             <div className="weather-info-container">
                 <div className="weather-image">
-                    <img src={wicon} alt="cloud" className="main-icon" />
+                    <img src={wicon} alt="weather icon" className="main-icon" />
                 </div>
-                
                 <div className="weather-details-button-container">
                     <div className="weather-details">
-                        <div className="weather-temp">57°F</div>
-                        <div className="weather-location">Ann Arbor, United States</div>
+                        <div className="weather-temp">...</div>
+                        <div className="weather-location">Ann Arbor, USA</div>
                     </div>
                     <button className="where-else" onClick={whereElseInTheWorld}>Twin</button>
                 </div>
             </div>
             <div className="data-container">
                 <div className="element">
-                    <img src={humidity_icon} alt="" className="icon" />
+                    <img src={humidity_icon} alt="humidity icon" className="icon" />
                     <div className="data">
-                        <div className="humidity-percentage">64%</div>
+                        <div className="humidity-percentage">...%</div>
                         <div className="text">Humidity</div>
                     </div>
                 </div>
                 <div className="element">
-                    <img src={wind_icon} alt="" className="icon" />
+                    <img src={wind_icon} alt="wind icon" className="icon" />
                     <div className="data">
-                        <div className="wind-speed">10 mph</div>
+                        <div className="wind-speed">... mph</div>
                         <div className="text">Wind Speed</div>
                     </div>
                 </div>
@@ -619,6 +620,5 @@ const WeatherApp = () => {
             <button className="lucky-button" onClick={fetchRandomWeather}>I'm Feeling Lucky</button>
         </div>
     )
-}
-
+}    
 export default WeatherApp;
