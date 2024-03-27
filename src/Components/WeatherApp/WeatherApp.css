@@ -46,12 +46,14 @@
     justify-content: center;
 }
 
-.weather-temp{
+.weather-temp {
     display: flex;
-    justify-content: center;
+    align-items: center; /* Align the temperature vertically */
     color: white;
-    font-size: 120px;
+    font-size: 120px; /* Or whatever your design requires */
     font-weight: 400;
+    position: relative; /* Needed to correctly position the button */
+    margin: 0; /* Adjust the margin as needed */
 }
 
 
@@ -186,4 +188,31 @@
     color: #130754; /* Text color on hover to match '.lucky-button', adjust as needed */
 }
 
+/* Add this to your WeatherApp.css */
+.temperature-container {
+    display: flex;
+    align-items: center; /* This ensures the button aligns nicely with the text */
+    justify-content: center; /* This centers the contents */
+    gap: 5px; /* Adds a small space between the temperature and the button */
+}
 
+.unit-button {
+    padding: 5px 10px; /* Adjust padding to match the design of the other buttons */
+    margin: 0;
+    background: transparent;
+    border: 2px solid white; /* Add white border */
+    border-radius: 40px; /* Rounded corners to match the other buttons */
+    color: white; /* The button text color */
+    font-size: 10px; /* Adjust font size to match other buttons */
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s; /* Transition for interaction */
+}
+
+.unit-button:hover {
+    background-color: white; /* Change background color on hover */
+    color: #130754; /* Change text color on hover */
+}
+
+.unit-button:focus {
+    outline: none;
+}

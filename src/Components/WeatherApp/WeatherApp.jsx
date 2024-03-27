@@ -26,6 +26,7 @@ const WeatherApp = () => {
     const [currentGradient, setCurrentGradient] = useState(0);
     const [isFahrenheit, setIsFahrenheit] = useState(true);
     const [temperature, setTemperature] = useState('...');
+    const [tempInF, setTempInF] = useState(0);
     
     const citiesList = ["Tokyo", "New York", "London", "Paris", "Sydney", 
     "Moscow", "Cairo", "Rio de Janeiro", "Toronto", "Beijing", "Berlin", "Rome", "Madrid",
@@ -76,7 +77,10 @@ const WeatherApp = () => {
     "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah",
     "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming", "Alabama", "Alaska", "Arizona",
     "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho",
-    "Illinois", "Indiana", "Iowa", "Kansas", "Kathmandu", "Pokhara", "Biratnagar", "Birgunj", "Butwal", "Hetauda",];
+    "Illinois", "Indiana", "Iowa", "Kansas", "Kathmandu", "Pokhara", "Biratnagar", "Birgunj", "Butwal", "Hetauda",
+    "Tbilisi", "Kutaisi", "Batumi", "Rustavi", "Zugdidi", "Gori", "Poti", "Samtredia", "Telavi", "Kobuleti",
+    "Shandong", "Jiangsu", "Zhejiang", "Anhui", "Fujian", "Jiangxi", "Liaoning", "Jilin", "Heilongjiang",
+    "Villa Nueva", "Guatemala City", "Mixco", "Petapa", "San Juan Sacatepequez", "Quetzaltenango", "Villa Canales"];
 
 
 
@@ -118,11 +122,12 @@ const WeatherApp = () => {
         'BY': 'Belarus',
         'BZ': 'Belize',
         'CA': 'Canada',
-        'CC': 'Cocos (Keeling) Islands',
+        'CC': 'Cocos Islands',
+        'CD': 'Democratic Republic of the Congo',
         'CF': 'Central African Republic',
         'CG': 'Congo',
         'CH': 'Switzerland',
-        'CI': 'Côte D\'ivoire (Ivory Coast)',
+        'CI': 'Côte D\'ivoire',
         'CK': 'Cook Iislands',
         'CL': 'Chile',
         'CM': 'Cameroon',
@@ -157,7 +162,7 @@ const WeatherApp = () => {
         'FR': 'France',
         'FX': 'France, Metropolitan',
         'GA': 'Gabon',
-        'GB': 'United Kingdom (Great Britain)',
+        'GB': 'United Kingdom',
         'GD': 'Grenada',
         'GE': 'Georgia',
         'GF': 'French Guiana',
@@ -186,7 +191,7 @@ const WeatherApp = () => {
         'IN': 'India',
         'IO': 'British Indian Ocean Territory',
         'IQ': 'Iraq',
-        'IR': 'Islamic Republic of Iran',
+        'IR': 'Iran',
         'IS': 'Iceland',
         'IT': 'Italy',
         'JM': 'Jamaica',
@@ -203,7 +208,7 @@ const WeatherApp = () => {
         'KW': 'Kuwait',
         'KY': 'Cayman Islands',
         'KZ': 'Kazakhstan',
-        'LA': 'Lao People\'s Democratic Republic',
+        'LA': 'Laos',
         'LB': 'Lebanon',
         'LC': 'Saint Lucia',
         'LI': 'Liechtenstein',
@@ -213,10 +218,10 @@ const WeatherApp = () => {
         'LT': 'Lithuania',
         'LU': 'Luxembourg',
         'LV': 'Latvia',
-        'LY': 'Libyan Arab Jamahiriya',
+        'LY': 'Libya',
         'MA': 'Morocco',
         'MC': 'Monaco',
-        'MD': 'Moldova, Republic of',
+        'MD': 'Moldova',
         'MG': 'Madagascar',
         'MH': 'Marshall Islands',
         'ML': 'Mali',
@@ -264,7 +269,7 @@ const WeatherApp = () => {
         'QA': 'Qatar',
         'RE': 'Réunion',
         'RO': 'Romania',
-        'RU': 'Russian Federation',
+        'RU': 'Russia',
         'RW': 'Rwanda',
         'SA': 'Saudi Arabia',
         'SB': 'Solomon Islands',
@@ -300,7 +305,7 @@ const WeatherApp = () => {
         'TR': 'Turkey',
         'TT': 'Trinidad & Tobago',
         'TV': 'Tuvalu',
-        'TW': 'Taiwan, Province of China',
+        'TW': 'Taiwan',
         'TZ': 'Tanzania, United Republic of',
         'UA': 'Ukraine',
         'UG': 'Uganda',
@@ -335,7 +340,6 @@ const WeatherApp = () => {
         'linear-gradient(180deg, #4facfe 0%, #00f2fe 100%)',               // Sky blue to light blue
         'linear-gradient(180deg, #5ee7df 0%, #b490ca 100%)',               // Light blue to light violet
         'linear-gradient(180deg, #0f2027 0%, #203a43 50%, #2c5364 100%)', // Deep blue to gray
-        'linear-gradient(180deg, #232526 0%, #414345 100%)',               // Dark slate
         'linear-gradient(180deg, #414345 0%, #232526 100%)',               // Dark slate to lighter slate
         'linear-gradient(180deg, #4b6cb7 0%, #182848 100%)',               // Mid blue to dark blue
         'linear-gradient(180deg, #1f1c2c 0%, #928dab 100%)',               // Dark violet to mid-light violet
@@ -349,7 +353,7 @@ const WeatherApp = () => {
         'linear-gradient(180deg, #00467f 0%, #a5cc82 100%)',               // Dark azure to pale leaf
         'linear-gradient(180deg, #614385 0%, #516395 100%)',               // Dusky purple to dusky blue
         'linear-gradient(180deg, #29323c 0%, #485563 100%)',               // Charcoal to slate blue
-        'linear-gradient(180deg, #1c92d2 0%, #f2fcfe 50%, #1c92d2 100%)'   // Sky blue to light mist (white text visible in darker areas)
+        'linear-gradient(180deg, #1c92d2 0%, #f2fcfe 50%, #1c92d2 100%)'   // Sky blue to light mist
       ];
 
       const weatherLocationRef = useRef(null);
@@ -398,20 +402,17 @@ const WeatherApp = () => {
 
 
     const toggleTemperatureUnit = () => {
-        setIsFahrenheit(!isFahrenheit); // Toggle the temperature unit state
-        // Assuming `weather-temp` contains the temperature value like '45°F' or '7°C'
-        const currentTemp = document.getElementsByClassName('weather-temp')[0].innerHTML;
+        setIsFahrenheit(!isFahrenheit);
+    
         let newTemp;
-        if (isFahrenheit) {
-            // Convert to Celsius
-            const tempInFahrenheit = parseFloat(currentTemp);
+        if (!isFahrenheit) { // if it's currently in Celsius, convert to Fahrenheit
+            newTemp = tempInF + '°F';
+        } 
+        else { // if it's currently in Fahrenheit, convert to Celsius
+            const tempInFahrenheit = parseFloat(temperature);
             newTemp = ((tempInFahrenheit - 32) * 5/9).toFixed(0) + '°C';
-        } else {
-            // Convert to Fahrenheit
-            const tempInCelsius = parseFloat(currentTemp);
-            newTemp = (tempInCelsius * 9/5 + 32).toFixed(0) + '°F';
         }
-        document.getElementsByClassName('weather-temp')[0].innerHTML = newTemp;
+        setTemperature(newTemp);
     };
     
     useEffect(() => {
@@ -515,6 +516,7 @@ const WeatherApp = () => {
             ? Math.floor(tempInCelsius * 9/5 + 32) // Convert to Fahrenheit if isFahrenheit is true
             : Math.floor(tempInCelsius); // Keep as Celsius otherwise
             setTemperature(`${cityTemperature}°${isFahrenheit ? 'F' : 'C'}`);
+            setTempInF(Math.floor(tempInCelsius * 9/5 + 32))
     
             // Update the UI with the new data
             const humidity = document.getElementsByClassName("humidity-percentage");
@@ -617,17 +619,19 @@ const WeatherApp = () => {
             </div>
             {error && <div className="error">{error}</div>}
             <div className="weather-info-container">
-                <div className="weather-image">
-                    <img src={wicon} alt="weather icon" className="main-icon" />
-                </div>
+                    <div className="weather-image">
+                        <img src={wicon} alt="weather icon" className="main-icon" />
+                    </div>
                 <div className="weather-details-button-container">
                     <div className="weather-details">
-                        <div className="weather-temp">
-                            {temperature}
-                        </div>
-                        <button onClick={toggleTemperatureUnit}>
+                        <div className="temperature-container">
+                            <div className="weather-temp">
+                                {temperature}
+                            </div>
+                            <button className="unit-button" onClick={toggleTemperatureUnit}>
                                 {isFahrenheit ? '°C' : '°F'}
-                        </button>
+                            </button>
+                        </div>
                         <div className="weather-location" ref={weatherLocationRef}>Ann Arbor, USA</div>
                     </div>
                     <button className="where-else" onClick={whereElseInTheWorld}>Twin</button>
