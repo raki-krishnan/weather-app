@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './WeatherApp.css';
 import Papa from 'papaparse';
 import search_icon from "../Assets/search.png";
@@ -349,18 +349,21 @@ const WeatherApp = () => {
         'linear-gradient(180deg, #29323c 0%, #485563 100%)',               // Charcoal to slate blue
         'linear-gradient(180deg, #1c92d2 0%, #f2fcfe 50%, #1c92d2 100%)'   // Sky blue to light mist (white text visible in darker areas)
       ];
-    
-    function adjustTextSize(id, initialFontSize, step) {
-        const element = document.getElementById(id);
-        let currentSize = initialFontSize;
-      
-        // Set the initial font size
-        element.style.fontSize = `${currentSize}px`;
-      
-        // Reduce the font size until the text fits or reaches a minimum size
-        while (element.scrollWidth > element.offsetWidth && currentSize > 12) { // minimum size = 12px
-          currentSize -= step;
-          element.style.fontSize = `${currentSize}px`;
+
+      const weatherLocationRef = useRef(null);
+
+      function adjustTextSize(initialFontSize, step) {
+        if (weatherLocationRef.current) {
+            let currentSize = initialFontSize;
+            
+            // Set the initial font size
+            weatherLocationRef.current.style.fontSize = `${currentSize}px`;
+            
+            // Reduce font size until the text fits or reaches a minimum size
+            while (weatherLocationRef.current.scrollWidth > weatherLocationRef.current.offsetWidth && currentSize > 12) {
+                currentSize -= step;
+                weatherLocationRef.current.style.fontSize = `${currentSize}px`;
+            }
         }
     }
     
@@ -381,12 +384,6 @@ const WeatherApp = () => {
         const results = Papa.parse(csv, { header: true });
         const rows = results.data; // array of objects
         setCities(rows);
-        
-        if (rows.length > 0) {
-            console.log("First city from the loaded data:", rows[0]);
-        } else {
-            console.log("No data in CSV");
-        }
     };
 
     const handleContainerClick = (event) => {
@@ -400,8 +397,9 @@ const WeatherApp = () => {
     useEffect(() => {
         loadCities();
         fetchWeatherData("Ann Arbor").catch(console.error);
+        adjustTextSize(50, 1); // Initial size and step
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [weatherLocationRef.current]);
 
     const fetchRandomWeather = () => {
         let retryCount = 0;
@@ -504,6 +502,7 @@ const WeatherApp = () => {
             adjustTextSize('weather-location', 50, 1); // Initial size = 60, step = 1
     
             // Update weather icon based on the API response
+            console.log("ICON = " + data.weather[0].icon);
             if(data.weather && data.weather[0].icon) {
                 switch(data.weather[0].icon) {
                     case "01d":
@@ -547,7 +546,8 @@ const WeatherApp = () => {
                         setWicon(nightsnow_icon);
                         break;
                     default:
-                        setWicon(cloud_icon);
+                        console.log('Default case hit, setting to cloud_icon');
+                        setWicon(thunderstorm_icon);
                 }
             }
             if (onSuccess) {
@@ -596,7 +596,7 @@ const WeatherApp = () => {
                 <div className="weather-details-button-container">
                     <div className="weather-details">
                         <div className="weather-temp">...</div>
-                        <div className="weather-location">Ann Arbor, USA</div>
+                        <div className="weather-location" ref={weatherLocationRef}>Ann Arbor, USA</div>
                     </div>
                     <button className="where-else" onClick={whereElseInTheWorld}>Twin</button>
                 </div>
