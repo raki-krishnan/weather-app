@@ -80,7 +80,11 @@ const WeatherApp = () => {
     "Illinois", "Indiana", "Iowa", "Kansas", "Kathmandu", "Pokhara", "Biratnagar", "Birgunj", "Butwal", "Hetauda",
     "Tbilisi", "Kutaisi", "Batumi", "Rustavi", "Zugdidi", "Gori", "Poti", "Samtredia", "Telavi", "Kobuleti",
     "Shandong", "Jiangsu", "Zhejiang", "Anhui", "Fujian", "Jiangxi", "Liaoning", "Jilin", "Heilongjiang",
-    "Villa Nueva", "Guatemala City", "Mixco", "Petapa", "San Juan Sacatepequez", "Quetzaltenango", "Villa Canales"];
+    "Villa Nueva", "Guatemala City", "Mixco", "Petapa", "San Juan Sacatepequez", "Quetzaltenango", "Villa Canales",
+    "Lagos", "Kano", "Ibadan", "Kaduna", "Port Harcourt", "Benin City", "Maiduguri", "Zaria", "Aba", "Jos", "Benin",
+    "Maputo", "Matola", "Beira", "Nampula", "Chimoio", "Nacala", "Quelimane", "Tete", "Xai-Xai", "Lichinga",
+    "Omdurman", "Khartoum", "Port Sudan", "Kassala", "El Obeid", "Kosti", "Wad Madani", "El Fasher", "Geneina",
+    "Giza", "Alexandria", "Niamey", "Lusaka", "Kigali", "Bujumbura", "Gabon", "Mbabane", "Windhoek", "Gaborone"];
 
 
 

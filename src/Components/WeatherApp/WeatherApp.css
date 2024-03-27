@@ -48,12 +48,12 @@
 
 .weather-temp {
     display: flex;
-    align-items: center; /* Align the temperature vertically */
+    align-items: center; 
     color: white;
-    font-size: 120px; /* Or whatever your design requires */
+    font-size: 120px; 
     font-weight: 400;
-    position: relative; /* Needed to correctly position the button */
-    margin: 0; /* Adjust the margin as needed */
+    position: relative; 
+    margin: 0; 
 }
 
 
@@ -63,10 +63,10 @@
     color: white;
     font-size: 60px;
     font-weight: 400;
-    white-space: nowrap; /* Prevent wrapping */
-    overflow: hidden; /* Hide overflow */
-    text-overflow: ellipsis; /* Add an ellipsis at the end if text overflows */
-    max-width: 100%; /* Set a maximum width */
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    max-width: 100%;
 }
 
 
@@ -112,20 +112,20 @@
     margin-top: 35px;
     margin-bottom: 15px;
     padding: 0 20px;
-    border: 2px solid white; /* Adjust the border size and color to match the 'Twin' button */
+    border: 2px solid white; 
     border-radius: 40px;
     background-color: transparent;
     color: white;
     font-size: 20px;
     cursor: pointer;
-    outline: none; /* Remove outline on focus for aesthetic reasons */
-    transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
+    outline: none; 
+    transition: background-color 0.3s, color 0.3s; 
     transform: translateY(-50%);
 }
 
 .lucky-button:hover {
-    background-color: white; /* Change color on hover */
-    color: #130754; /* Text color on hover, adjust as needed */
+    background-color: white; 
+    color: #130754; 
 }
 
 .weather-info-container {
@@ -171,8 +171,8 @@
         margin: 0;
         background: none;
         border: none;
-        color: inherit; /* The button text color will inherit from the parent */
-        font-size: 0.8em; /* Adjust the font size as needed */
+        color: inherit;
+        font-size: 0.8em;
         cursor: pointer;
     }
     
@@ -184,33 +184,32 @@
 }
 
 .where-else:hover {
-    background-color: white; /* Change color on hover to match '.lucky-button' */
-    color: #130754; /* Text color on hover to match '.lucky-button', adjust as needed */
+    background-color: white; 
+    color: #130754; 
 }
 
-/* Add this to your WeatherApp.css */
+
 .temperature-container {
     display: flex;
-    align-items: center; /* This ensures the button aligns nicely with the text */
-    justify-content: center; /* This centers the contents */
-    gap: 5px; /* Adds a small space between the temperature and the button */
+    align-items: center; 
+    justify-content: center; 
+    gap: 5px; 
 }
 
 .unit-button {
-    padding: 5px 10px; /* Adjust padding to match the design of the other buttons */
-    margin: 0;
+    padding: 5px 10px; 
     background: transparent;
-    border: 2px solid white; /* Add white border */
-    border-radius: 40px; /* Rounded corners to match the other buttons */
-    color: white; /* The button text color */
-    font-size: 10px; /* Adjust font size to match other buttons */
+    border: 2px solid white; 
+    border-radius: 40px; 
+    color: white; 
+    font-size: 10px; 
     cursor: pointer;
-    transition: background-color 0.3s, color 0.3s; /* Transition for interaction */
+    transition: background-color 0.3s, color 0.3s; 
 }
 
 .unit-button:hover {
-    background-color: white; /* Change background color on hover */
-    color: #130754; /* Change text color on hover */
+    background-color: white; 
+    color: #130754;
 }
 
 .unit-button:focus {
