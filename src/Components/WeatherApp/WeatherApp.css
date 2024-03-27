@@ -56,11 +56,15 @@
 
 
 .weather-location{
-    display: flex;
+    display: inline-block;
     justify-content: center;
     color: white;
     font-size: 60px;
     font-weight: 400;
+    white-space: nowrap; /* Prevent wrapping */
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis; /* Add an ellipsis at the end if text overflows */
+    max-width: 100%; /* Set a maximum width */
 }
 
 
@@ -128,6 +132,7 @@
     align-items: center;
     justify-content: center;
     flex: 1;
+    max-width: 100%;
 }
 .weather-details-button-container {
     display: flex;
