@@ -56,7 +56,7 @@ const WeatherApp = () => {
     "Manchester", "Birmingham", "Leeds", "Glasgow", "Sheffield", "Liverpool", "Bristol", "Cardiff",
     "Blacksburg", "Durban", "Bloemfontein", "Port Elizabeth", "East London", "Pietermaritzburg",
     "Jinja", "Kampala", "Tampa", "Mombasa", "Kisumu", "Eldoret", "Nakuru", "Kisii", "Kakamega",
-    "Austin", "Little Rock", "Des Moines", "Boise", "Jackson", "Billings", "Helena", "Cheyenne",
+    "Austin", "Little Rock", "Des Moines", "Boise", "Jackson", "Billings", "Helena", "Cheyenne", "Charlottesville",
     "Santa Fe", "Olympia", "Salem", "Carson City", "Juneau", "Fairfax", "Bethesda", "Fairbanks",
     "Annapolis", "Harrisburg", "Trenton", "Albany", "Hartford", "Providence", "Concord", "Montpelier",
     "Green Bay", "Madison", "Springfield", "Lansing", "Topeka", "Jefferson City", "Lincoln", "Pierre", 
@@ -86,7 +86,8 @@ const WeatherApp = () => {
     "Lagos", "Kano", "Ibadan", "Kaduna", "Port Harcourt", "Benin City", "Maiduguri", "Zaria", "Aba", "Jos", "Benin",
     "Maputo", "Matola", "Beira", "Nampula", "Chimoio", "Nacala", "Quelimane", "Tete", "Xai-Xai", "Lichinga",
     "Omdurman", "Khartoum", "Port Sudan", "Kassala", "El Obeid", "Kosti", "Wad Madani", "El Fasher", "Geneina",
-    "Giza", "Alexandria", "Niamey", "Lusaka", "Kigali", "Bujumbura", "Gabon", "Mbabane", "Windhoek", "Gaborone"];
+    "Giza", "Alexandria", "Niamey", "Lusaka", "Kigali", "Bujumbura", "Gabon", "Mbabane", "Windhoek", "Gaborone",
+    "Papeete", "Noumea", "Port Vila", "Apia", "Pago Pago", "Nuku'alofa", "Funafuti", "Majuro", "Palikir", "Yaren",];
 
 
 
@@ -442,7 +443,8 @@ const WeatherApp = () => {
         }
     };
 
-    const selectCity = (city) => {
+    const selectCity = (city, event) => {
+        event.stopPropagation();
         setSearchTerm(city);
         setFilteredCities([]);
     };
@@ -650,7 +652,7 @@ const WeatherApp = () => {
                 {filteredCities.length > 0 && (
                     <div className="suggestions-container">
                         {filteredCities.map((city, index) => (
-                            <div key={index} className="suggestion" onClick={() => selectCity(city)}>
+                            <div key={index} className="suggestion" onClick={(event) => selectCity(city, event)}>
                                 {city}
                             </div>
                         ))}
