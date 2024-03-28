@@ -28,7 +28,7 @@ const WeatherApp = () => {
     const [temperature, setTemperature] = useState('...');
     const [tempInF, setTempInF] = useState(0);
     
-    const citiesList = ["Tokyo", "New York", "London", "Paris", "Sydney", 
+    const citiesList = ["Tokyo", "New York", "London", "Paris", "Sydney", "Washington DC",
     "Moscow", "Cairo", "Rio de Janeiro", "Toronto", "Beijing", "Berlin", "Rome", "Madrid",
     "Dubai", "Seoul", "Istanbul", "Mumbai", "Bangkok", "Los Angeles", "Chicago", "Miami",
     "Las Vegas", "San Francisco", "Washington", "Boston", "Seattle", "Dallas", "Houston",
@@ -617,9 +617,9 @@ const WeatherApp = () => {
                         }
                     }}
                 />
-                <div className="search-icon" onClick={search}>
+                <button className="search-icon" onClick={search}>
                     <img src={search_icon} alt="search"/>
-                </div>
+                </button>
             </div>
             {error && <div className="error">{error}</div>}
             <div className="weather-info-container">
