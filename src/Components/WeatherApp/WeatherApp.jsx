@@ -54,15 +54,15 @@ const WeatherApp = () => {
     "Lahore", "Karachi", "Islamabad", "Dhaka", "Chittagong", "Colombo", "Kandy", "Galle", "Jaffna",
     "Munich", "Naples", "Turin", "Palermo", "Genoa", "Bologna", "Florence", "Hamburg", "Bari",
     "Manchester", "Birmingham", "Leeds", "Glasgow", "Sheffield", "Liverpool", "Bristol", "Cardiff",
-    "Blacksburg", "Durban", "Bloemfontein", "Port Elizabeth", "East London", "Pietermaritzburg",
-    "Jinja", "Kampala", "Tampa", "Mombasa", "Kisumu", "Eldoret", "Nakuru", "Kisii", "Kakamega",
+    "Blacksburg", "Durban", "Bloemfontein", "Port Elizabeth", "East London", "Pietermaritzburg", "Stoke",
+    "Jinja", "Kampala", "Tampa", "Mombasa", "Kisumu", "Eldoret", "Nakuru", "Kisii", "Kakamega", "Bonnaventure",
     "Austin", "Little Rock", "Des Moines", "Boise", "Jackson", "Billings", "Helena", "Cheyenne", "Charlottesville",
     "Santa Fe", "Olympia", "Salem", "Carson City", "Juneau", "Fairfax", "Bethesda", "Fairbanks",
     "Annapolis", "Harrisburg", "Trenton", "Albany", "Hartford", "Providence", "Concord", "Montpelier",
     "Green Bay", "Madison", "Springfield", "Lansing", "Topeka", "Jefferson City", "Lincoln", "Pierre", 
     "Ann Arbor", "Boulder", "Bloomington", "Champaign", "Evanston", "Ithaca", "Lawrence", "Lexington",
     "Morgantown", "Norman", "Oxford", "Palo Alto", "Princeton", "Raleigh", "State College", "Tallahassee",
-    "New Mexico", "Urbana", "Anaheim", "Berkeley", "Cambridge", "Chapel Hill", "Columbia", "Davis", 
+    "West Palm Beach", "Urbana", "Anaheim", "Berkeley", "Cambridge", "Chapel Hill", "Columbia", "Davis", 
     "Gainesville", "Montreal", "Quebec City", "Vancouver", "Calgary", "Edmonton", "Ottawa", "Winnipeg",
     "Halifax", "St. John's", "Regina", "Saskatoon", "Victoria", "Fredericton", "Charlottetown", "Whitehorse",
     "Farmington Hills", "West Bloomfield", "Troy", "Novi", "Royal Oak", "Birmingham", "Southfield", "Livonia",
@@ -433,11 +433,18 @@ const WeatherApp = () => {
     const handleInputChange = (event) => {
         const value = event.target.value;
         setSearchTerm(value);
+    
         if (value.length > 0) {
             const filtered = citiesList.filter(city =>
                 city.toLowerCase().includes(value.toLowerCase())
             );
-            setFilteredCities(filtered.slice(0, 5)); // Limiting suggestions to 5
+            
+            // Check if there's only one city matching and it's the same as the input
+            if (filtered.length === 1 && filtered[0].toLowerCase() === value.toLowerCase()) {
+                setFilteredCities([]);
+            } else {
+                setFilteredCities(filtered.slice(0, 5)); // Keep limiting suggestions to 5
+            }
         } else {
             setFilteredCities([]);
         }
