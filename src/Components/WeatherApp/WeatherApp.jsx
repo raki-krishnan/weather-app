@@ -27,6 +27,8 @@ const WeatherApp = () => {
     const [isFahrenheit, setIsFahrenheit] = useState(true);
     const [temperature, setTemperature] = useState('...');
     const [tempInF, setTempInF] = useState(0);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filteredCities, setFilteredCities] = useState([]);
     
     const citiesList = ["Tokyo", "New York", "London", "Paris", "Sydney", "Washington DC",
     "Moscow", "Cairo", "Rio de Janeiro", "Toronto", "Beijing", "Berlin", "Rome", "Madrid",
@@ -70,7 +72,7 @@ const WeatherApp = () => {
     "Nice", "Lyon", "Marseille", "Toulouse", "Bordeaux", "Nantes", "Rennes", "Lille", "Strasbourg",
     "Hyderabad", "Goa", "Kerala", "Jaipur", "Lucknow", "Kanpur", "Nagpur", "Odisha", "Patna", "Punjab",
     "West Bengal", "Srinagar", "Agra", "Allahabad", "Amritsar", "Bhopal", "Chandigarh", "Dehradun",
-    "Busan", "Daegu", "Incheon", "Gwangju", "Daejeon", "Ulsan", "Jeju", "Sejong", "Suwon", "Goyang",
+    "Busan", "Daegu", "Incheon", "Guangdong", "Daejeon", "Ulsan", "Jeju", "Sejong", "Suwon", "Goyang",
     "Jerusalem", "Tel Aviv", "Haifa", "Rishon LeZion", "Rabat", "Casablanca", "Fes", "Tangier", "Marrakesh",
     "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi",
     "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "Oklahoma",
@@ -426,6 +428,25 @@ const WeatherApp = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [weatherLocationRef.current]);
 
+
+    const handleInputChange = (event) => {
+        const value = event.target.value;
+        setSearchTerm(value);
+        if (value.length > 0) {
+            const filtered = citiesList.filter(city =>
+                city.toLowerCase().includes(value.toLowerCase())
+            );
+            setFilteredCities(filtered.slice(0, 5)); // Limiting suggestions to 5
+        } else {
+            setFilteredCities([]);
+        }
+    };
+
+    const selectCity = (city) => {
+        setSearchTerm(city);
+        setFilteredCities([]);
+    };
+
     const fetchRandomWeather = () => {
         let retryCount = 0;
         const maxRetries = 10; // Set a maximum number of retries to prevent infinite loops
@@ -607,19 +628,34 @@ const WeatherApp = () => {
         <div className="container" onClick={handleContainerClick} style={{ backgroundImage: gradients[currentGradient] }}>
             {loading && <div className="loading">Loading...</div>}
             <div className="top-bar">
-                <input 
-                    type="text" 
-                    className="cityInput" 
-                    placeholder="Search"
-                    onKeyPress={(event) => {
-                        if (event.key === 'Enter') {
-                            search();
-                        }
-                    }}
-                />
+                <div className="search-container">
+                    <input 
+                        type="text" 
+                        className="cityInput" 
+                        placeholder="Search"
+                        value={searchTerm}
+                        onChange={handleInputChange}
+                        onKeyPress={(event) => {
+                            if (event.key === 'Enter') {
+                                search();
+                            }
+                        }}
+                    />
+                </div>
                 <button className="search-icon" onClick={search}>
                     <img src={search_icon} alt="search"/>
                 </button>
+            </div>
+            <div className="search-container">
+                {filteredCities.length > 0 && (
+                    <div className="suggestions-container">
+                        {filteredCities.map((city, index) => (
+                            <div key={index} className="suggestion" onClick={() => selectCity(city)}>
+                                {city}
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
             {error && <div className="error">{error}</div>}
             <div className="weather-info-container">
