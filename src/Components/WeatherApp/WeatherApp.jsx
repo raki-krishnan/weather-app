@@ -352,10 +352,8 @@ const WeatherApp = () => {
 
     const gradients = [
         'linear-gradient(180deg, #130754 0%, #3b2f80 100%)',               // Dark violet to dark blue
-        'linear-gradient(180deg, #ff758c 0%, #ff7eb3 100%)',               // Pink to light pink
         'linear-gradient(180deg, #00bf8f 0%, #001510 100%)',               // Green to dark green
         'linear-gradient(180deg, #4facfe 0%, #00f2fe 100%)',               // Sky blue to light blue
-        'linear-gradient(180deg, #5ee7df 0%, #b490ca 100%)',               // Light blue to light violet
         'linear-gradient(180deg, #0f2027 0%, #203a43 50%, #2c5364 100%)', // Deep blue to gray
         'linear-gradient(180deg, #414345 0%, #232526 100%)',               // Dark slate to lighter slate
         'linear-gradient(180deg, #4b6cb7 0%, #182848 100%)',               // Mid blue to dark blue
@@ -589,20 +587,6 @@ const WeatherApp = () => {
             }
             adjustTextSize('weather-location', 50, 1); // Initial size = 60, step = 1
 
-            //animations
-            if(data.weather[0].main === 'Rain') {
-                setIsRaining(true);
-              } else {
-                setIsRaining(false);
-              }
-              
-              if(data.weather[0].main === 'Thunderstorm') {
-                setIsThunderstorm(true);
-                setIsRaining(true)
-              } else {
-                setIsThunderstorm(false);
-                setIsRaining(false);
-              }
     
             // Update weather icon based on the API response
             console.log("ICON = " + data.weather[0].icon);
@@ -728,16 +712,16 @@ const WeatherApp = () => {
                     }}
                 />
             ))}
-            {isThunderstorm && Array.from({ length: 5 }).map((_, index) => (
-            <div
-                key={index}
-                className="lightning"
-                style={{
-                left: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 2}s`,
-                animationDuration: `${0.2 + Math.random() * 0.3}s`
-                }}
-            />
+            {isThunderstorm && Array.from({ length: 300 }).map((_, index) => ( // Increase to 300 for a thicker effect
+                <div
+                    key={index}
+                    className="heavy-raindrop" // Using the heavy-raindrop class
+                    style={{
+                        left: `${Math.random() * 100}%`,
+                        animationDuration: `${0.2 + Math.random() * 0.3}s`, // Keep fast fall speed
+                        animationDelay: `-${Math.random()}s`,
+                    }}
+                />
             ))}
             {isSnowing && Array.from({ length: 50 }).map((_, index) => (
                 <div

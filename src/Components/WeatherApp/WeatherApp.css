@@ -279,6 +279,19 @@
     opacity: 0;
     animation: raindrop 0.6s linear infinite;
 }
+
+.heavy-raindrop {
+    width: 5px; /* Slightly wider for more visual impact */
+    height: 22px; /* Slightly longer for a more pronounced effect */
+    animation: heavy-rain 0.3s linear infinite; /* Keep the animation fast */
+    background-color: #0af; /* Adjust color if needed */
+}
+
+@keyframes heavy-rain {
+    0% { opacity: 0; top: -10%; }
+    30% { opacity: 0.8; }
+    100% { opacity: 0; top: 110%; } /* Ensure it falls past the viewport */
+}
   
 
 @keyframes snowfall {
@@ -326,3 +339,5 @@
     border-radius: 50%;
     animation: twinkling 1s infinite ease-in-out alternate;
 }
+
+
