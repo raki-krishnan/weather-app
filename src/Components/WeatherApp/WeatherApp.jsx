@@ -35,6 +35,8 @@ const WeatherApp = () => {
     const [isDrizzle, setIsDrizzle] = useState(false);
     const [isSnowing, setIsSnowing] = useState(false);
     const [isClearNight, setIsClearNight] = useState(false);
+    const [starPositions, setStarPositions] = useState([]);
+
 
     
     const citiesList = ["Tokyo", "New York", "London", "Paris", "Sydney", "Washington DC",
@@ -432,11 +434,20 @@ const WeatherApp = () => {
 
     
     useEffect(() => {
+        
+        setStarPositions(Array.from({ length: 100 }).map(() => ({
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            animationDuration: `${Math.random() + 1}s`, // Randomize duration between 1s and 2s
+            animationDelay: `${Math.random()}s` // Randomize delay up to 1s
+        })));
+
         loadCities();
         fetchWeatherData("Ann Arbor").catch(console.error);
         adjustTextSize(50, 1);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [weatherLocationRef.current]);
+    
 
 
     const handleInputChange = (event) => {
@@ -504,7 +515,6 @@ const WeatherApp = () => {
     const element = document.getElementsByClassName("cityInput");
     
     const whereElseInTheWorld = async () => {
-        // Get the current temperature in a state that doesn't change on re-render
         const currentTemp = temperature; 
         let currentCity = document.getElementsByClassName("weather-location")[0].innerHTML.split(",")[0];
     
@@ -687,15 +697,6 @@ const WeatherApp = () => {
         animationDelay: `-${Math.random() * 2}s`,
     });
 
-    const starStyles = index => ({
-        left: `${Math.random() * 100}%`,
-        top: `${Math.random() * 100}%`,
-        animationDuration: `${Math.random() + 1}s`, // Randomize duration between 1s and 2s
-        animationDelay: `${Math.random()}s` // Randomize delay up to 1s
-    });
-
-
-
     return (
         <div
         className="container"
@@ -745,8 +746,8 @@ const WeatherApp = () => {
                     style={snowFlakeStyles()}
                 />
             ))}
-            {isClearNight && Array.from({ length: 100 }).map((_, index) => (
-                <div key={index} className="star" style={starStyles(index)} />
+            {isClearNight && starPositions.map((style, index) => (
+            <div key={index} className="star" style={style} />
             ))}
             <div className="top-bar">
                 <div className="search-container">
