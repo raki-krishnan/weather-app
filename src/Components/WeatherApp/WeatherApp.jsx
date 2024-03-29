@@ -15,6 +15,7 @@ import nightclear_icon from "../Assets/nightclear.png";
 import nightcloud_icon from "../Assets/nightcloud.png";
 import nightthunderstorm_icon from "../Assets/nightthunderstorm.png";
 import nightsnow_icon from "../Assets/nightsnow.png";
+import mist_icon from "../Assets/mist.png";
 
 
 const WeatherApp = () => {
@@ -29,6 +30,10 @@ const WeatherApp = () => {
     const [tempInF, setTempInF] = useState(0);
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredCities, setFilteredCities] = useState([]);
+    const [isRaining, setIsRaining] = useState(false);
+    const [isThunderstorm, setIsThunderstorm] = useState(false);
+    const [isDrizzle, setIsDrizzle] = useState(false);
+    const [isSnowing, setIsSnowing] = useState(false);
     
     const citiesList = ["Tokyo", "New York", "London", "Paris", "Sydney", "Washington DC",
     "Moscow", "Cairo", "Rio de Janeiro", "Toronto", "Beijing", "Berlin", "Rome", "Madrid",
@@ -426,7 +431,7 @@ const WeatherApp = () => {
     useEffect(() => {
         loadCities();
         fetchWeatherData("Ann Arbor").catch(console.error);
-        adjustTextSize(50, 1); // Initial size and step
+        adjustTextSize(50, 1);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [weatherLocationRef.current]);
 
@@ -530,6 +535,11 @@ const WeatherApp = () => {
 
         setLoading(true);
         setError(null);
+        setIsDrizzle(false);
+        setIsRaining(false);
+        setIsThunderstorm(false);
+        setIsSnowing(false);
+
     
         try {
             const response = await fetch(url);
@@ -556,8 +566,28 @@ const WeatherApp = () => {
             wind[0].innerHTML = data.wind.speed + " mph";
 
             // temperature.innerHTML = `${cityTemperature}°${isFahrenheit ? 'F' : 'C'}`;
-            location[0].innerHTML = data.name + ", " + countryCodes[data.sys.country];
+            if (data.sys.country !== undefined) {
+                location[0].innerHTML = data.name + ", " + countryCodes[data.sys.country];
+            } 
+            else{
+                location[0].innerHTML = data.name
+            }
             adjustTextSize('weather-location', 50, 1); // Initial size = 60, step = 1
+
+            //animations
+            if(data.weather[0].main === 'Rain') {
+                setIsRaining(true);
+              } else {
+                setIsRaining(false);
+              }
+              
+              if(data.weather[0].main === 'Thunderstorm') {
+                setIsThunderstorm(true);
+                setIsRaining(true)
+              } else {
+                setIsThunderstorm(false);
+                setIsRaining(false);
+              }
     
             // Update weather icon based on the API response
             console.log("ICON = " + data.weather[0].icon);
@@ -581,31 +611,43 @@ const WeatherApp = () => {
                         break;
                     case "09d":
                         setWicon(drizzle_icon);
+                        setIsDrizzle(true);
                         break;
                     case "09n":
                         setWicon(nightrain_icon);
+                        setIsDrizzle(true);
                         break;
                     case "10d":
                         setWicon(rain_icon);
+                        setIsRaining(true);
                         break;
                     case "10n":
                         setWicon(nightrain_icon);
+                        setIsRaining(true);
                         break;
                     case "11d":
                         setWicon(thunderstorm_icon);
+                        setIsRaining(true);
                         break;
                     case "11n":
                         setWicon(nightthunderstorm_icon);
+                        setIsRaining(true);
                         break;
                     case "13d":
                         setWicon(snow_icon);
+                        setIsSnowing(true);
                         break;
                     case "13n":
                         setWicon(nightsnow_icon);
+                        setIsSnowing(true);
+                        break;
+                    case "50d":
+                    case "50n":
+                        setWicon(mist_icon);
                         break;
                     default:
                         console.log('Default case hit, setting to cloud_icon');
-                        setWicon(thunderstorm_icon);
+                        setWicon(clear_icon);
                 }
             }
             if (onSuccess) {
@@ -628,9 +670,55 @@ const WeatherApp = () => {
         fetchWeatherData(element[0].value);
     };
 
+    const snowFlakeStyles = () => ({
+        left: `${Math.random() * 100}%`,
+        animationDuration: `${3 + Math.random() * 2}s`, // Longer duration for snowflakes
+        animationDelay: `-${Math.random() * 2}s`,
+    });
+
     return (
         <div className="container" onClick={handleContainerClick} style={{ backgroundImage: gradients[currentGradient] }}>
             {loading && <div className="loading">Loading...</div>}
+            {isRaining && Array.from({ length: 20 }).map((_, index) => (
+                <div
+                    key={index}
+                    className="raindrop"
+                    style={{
+                    left: `${Math.random() * 100}%`, 
+                    animationDuration: `${0.5 + Math.random() * 0.5}s`, 
+                    animationDelay: `-${Math.random()}s`,
+                    }}
+                />
+            ))}
+            {isDrizzle && Array.from({ length: 20 }).map((_, index) => (
+                <div
+                    key={index}
+                    className="drizzle"
+                    style={{
+                    left: `${Math.random() * 100}%`,
+                    animationDuration: `${0.5 + Math.random() * 0.5}s`, 
+                    animationDelay: `-${Math.random()}s`,
+                    }}
+                />
+            ))}
+            {isThunderstorm && Array.from({ length: 5 }).map((_, index) => (
+            <div
+                key={index}
+                className="lightning"
+                style={{
+                left: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 2}s`,
+                animationDuration: `${0.2 + Math.random() * 0.3}s`
+                }}
+            />
+            ))}
+            {isSnowing && Array.from({ length: 50 }).map((_, index) => (
+                <div
+                    key={index}
+                    className="snowflake"
+                    style={snowFlakeStyles()}
+                />
+            ))}
             <div className="top-bar">
                 <div className="search-container">
                     <input 

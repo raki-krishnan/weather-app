@@ -245,3 +245,78 @@
 .suggestion:hover {
     background-color: rgba(0, 0, 0, 0.1);
 }
+
+
+  
+@keyframes raindrop {
+    0% { opacity: 0; top: -10%; }
+    30% { opacity: 0.6; } 
+    100% { opacity: 0; top: 110%; } /* Let it fall further past 100% */
+}
+
+.raindrop {
+    position: absolute;
+    background-color: #0af;
+    width: 3px; 
+    height: 15px; 
+    border-radius: 50%;
+    opacity: 0;
+    animation: raindrop 0.4s linear infinite;
+}
+
+
+@keyframes drizzle {
+    0% { opacity: 0; top: -10%; }
+    30% { opacity: 1; }
+    100% { opacity: 0; top: 100%; }
+}
+  
+.drizzle {
+    position: absolute;
+    background-color: #0af;
+    width: 2px;
+    height: 10px;
+    opacity: 0;
+    animation: raindrop 0.6s linear infinite;
+}
+  
+@keyframes lightning {
+    0%, 100% { opacity: 0; }
+    90% { opacity: 0; }
+    91% { opacity: 1; }
+    92% { opacity: 0; }
+}
+  
+.lightning {
+    position: absolute;
+    background-color: #ffc;
+    width: 2px;
+    height: 50px;
+    opacity: 0;
+    animation: lightning 2s ease-in-out;
+}
+
+
+@keyframes snowfall {
+    0% { transform: translateY(0) translateX(0); opacity: 1; }
+    100% { transform: translateY(100vh) translateX(calc(100vw * var(--flutter))); opacity: 0; }
+    0% { opacity: 0; top: -10%; }
+    30% { opacity: 1; }
+    100% { opacity: 0; top: 100%; }
+  }
+  
+@keyframes flutter {
+    0%, 100% { --flutter: -0.5; }
+    50% { --flutter: 0.5; }
+}
+  
+.snowflake {
+    position: absolute;
+    background-color: #FFF;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    opacity: 0;
+    animation: snowfall linear infinite, flutter 2s infinite;
+    will-change: transform;
+}
