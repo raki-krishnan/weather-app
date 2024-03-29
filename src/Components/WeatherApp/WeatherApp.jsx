@@ -37,6 +37,8 @@ const WeatherApp = () => {
     const [isClearNight, setIsClearNight] = useState(false);
     const [starPositions, setStarPositions] = useState([]);
     const [isFilling, setIsFilling] = useState(false);
+    const [raindrops, setRaindrops] = useState([]);
+    const [splashes, setSplashes] = useState([]);
 
 
     
@@ -446,6 +448,57 @@ const WeatherApp = () => {
         adjustTextSize(50, 1);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [weatherLocationRef.current]);
+
+    useEffect(() => {
+        let interval;
+        if (isRaining) {
+            interval = setInterval(() => {
+                setRaindrops((currentDrops) => [
+                    ...currentDrops,
+                    {
+                        id: Math.random(), // You might want to use a better id generation strategy
+                        left: `${Math.random() * 100}%`,
+                        duration: `${0.5 + Math.random() * 0.5}s`,
+                        delay: `-${Math.random()}s`,
+                    },
+                ]);
+            }, 100);
+        } else {
+            // Clear raindrops when it stops raining
+            setRaindrops([]);
+        }
+    
+        return () => clearInterval(interval);
+    }, [isRaining]);
+
+
+    useEffect(() => {
+        if (isRaining) {
+          // When a drop is added, we want to add a splash after it would have fallen
+          const lastDrop = raindrops[raindrops.length - 1];
+          if (lastDrop) {
+            const timeout = setTimeout(() => {
+              setSplashes((currentSplashes) => [
+                ...currentSplashes,
+                {
+                  id: lastDrop.id,
+                  left: lastDrop.left,
+                },
+              ]);
+      
+              // Remove the splash after it has animated
+              setTimeout(() => {
+                setSplashes((currentSplashes) =>
+                  currentSplashes.filter((splash) => splash.id !== lastDrop.id),
+                );
+              }, 500);
+            }, parseFloat(lastDrop.duration) * 1000);
+      
+            return () => clearTimeout(timeout);
+          }
+        }
+    }, [raindrops, isRaining]);
+      
     
 
 
@@ -696,6 +749,30 @@ const WeatherApp = () => {
         }}
         >
             {loading && <div className="loading">Loading...</div>}
+    
+                {/* Render raindrops */}
+                {raindrops.map((drop) => (
+                <div
+                    key={drop.id}
+                    className="raindrop"
+                    style={{
+                    left: drop.left,
+                    animationDuration: drop.duration,
+                    animationDelay: drop.delay,
+                    }}
+                />
+                ))}
+                
+                {/* Render splashes */}
+                {splashes.map((splash) => (
+                <div
+                    key={splash.id}
+                    className="splash"
+                    style={{
+                    left: splash.left,
+                    }}
+                />
+                ))}
             {isRaining && Array.from({ length: 20 }).map((_, index) => (
                 <div
                     key={index}
