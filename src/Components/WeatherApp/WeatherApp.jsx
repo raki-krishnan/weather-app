@@ -35,24 +35,24 @@ const WeatherApp = () => {
     "Dubai", "Seoul", "Istanbul", "Mumbai", "Bangkok", "Los Angeles", "Chicago", "Miami",
     "Las Vegas", "San Francisco", "Washington", "Boston", "Seattle", "Dallas", "Houston",
     "Atlanta", "Philadelphia", "Phoenix", "Denver", "Minneapolis", "Detroit", "Honolulu",
-    "Anchorage", "Mexico City", "Buenos Aires", "Sao Paulo", "Cape Town", "Johannesburg",
-    "Nairobi", "Copenhagen", "Stockholm", "Oslo", "Helsinki", "Warsaw", "Prague", "Vienna",
+    "Anchorage", "Mexico City", "Buenos Aires", "Sao Paulo", "Cape Town", "Johannesburg", "Bern",
+    "Nairobi", "Copenhagen", "Stockholm", "Oslo", "Helsinki", "Warsaw", "Prague", "Vienna", "Kismayo",
     "Budapest", "Athens", "Melbourne", "Edinburgh", "St. Petersburg", "Kiev", "Minsk", "Pretoria",
-    "New Delhi", "Chennai", "Bombay", "Cologne", "Frankfurt", "Zurich", "Geneva", " Bogota",
-    "Lima", "Caracas", "Santiago", "Cancun", "Quito", "Guayaquil", "La Paz", "Asuncion",
-    "San Diego", "San Antonio", "San Jose", "New Orleans", "Portland", "Salt Lake City",
-    "Barcelona", "Venice", "Milan", "Amsterdam", "Brussels", "Dublin", "Lisbon", "Bucharest",
-    "Shanghai", "Hong Kong", "Singapore", "Kuala Lumpur", "Jakarta", "Manila", "Hanoi", 
+    "New Delhi", "Chennai", "Bombay", "Cologne", "Frankfurt", "Zurich", "Geneva", " Bogota", "Malmö",
+    "Lima", "Caracas", "Santiago", "Cancun", "Quito", "Guayaquil", "La Paz", "Asuncion", "Gothenburg",
+    "San Diego", "San Antonio", "San Jose", "New Orleans", "Portland", "Salt Lake City", "Stavanger",
+    "Barcelona", "Venice", "Milan", "Amsterdam", "Brussels", "Dublin", "Lisbon", "Bucharest", "Arendal",
+    "Shanghai", "Hong Kong", "Singapore", "Kuala Lumpur", "Jakarta", "Manila", "Hanoi", "Tunis",
     "Normandy", "Taipei", "Auckland", "Wellington", "Christchurch", "Brisbane", "Perth",
-    "Adelaide", "Canberra", "Hobart", "Darwin", "Alice Springs", "Cairns", "Gold Coast",
-    "Townsville", "Mackay", "Rockhampton", "Bundaberg", "Hervey Bay", "Fraser Island", 
-    "Luzhou", "Chengdu", "Chongqing", "Wuhan", "Nanjing", "Hangzhou", "Puyang", "Suzhou",
+    "Adelaide", "Canberra", "Hobart", "Darwin", "Alice Springs", "Cairns", "Gold Coast", "Puducherry",
+    "Townsville", "Mackay", "Rockhampton", "Bundaberg", "Hervey Bay", "Fraser Island", "Palm",
+    "Luzhou", "Chengdu", "Chongqing", "Wuhan", "Nanjing", "Hangzhou", "Puyang", "Suzhou", "Reykjavik",
     "Charlotte", "Indianapolis", "Columbus", "Fort Worth", "El Paso", "Louisville", "Nashville",
     "Memphis", "Oklahoma City", "Santa Monica", "Baltimore", "Milwaukee", "Albuquerque", "Tucson",
     "Fresno", "Sacramento", "Long Beach", "Kansas City", "Mesa", "Virginia Beach", "Santa Clara",
     "Manhattan", "The Bronx", "Buffalo", "Rochester", "Kolkata", "Pune", "Ahmedabad", "Hyderabad",
     "Lahore", "Karachi", "Islamabad", "Dhaka", "Chittagong", "Colombo", "Kandy", "Galle", "Jaffna",
-    "Munich", "Naples", "Turin", "Palermo", "Genoa", "Bologna", "Florence", "Hamburg", "Bari",
+    "Munich", "Naples", "Turin", "Palermo", "Genoa", "Bologna", "Florence", "Hamburg", "Bari", "Shenzhen",
     "Manchester", "Birmingham", "Leeds", "Glasgow", "Sheffield", "Liverpool", "Bristol", "Cardiff",
     "Blacksburg", "Durban", "Bloemfontein", "Port Elizabeth", "East London", "Pietermaritzburg", "Stoke",
     "Jinja", "Kampala", "Tampa", "Mombasa", "Kisumu", "Eldoret", "Nakuru", "Kisii", "Kakamega", "Bonnaventure",
@@ -66,12 +66,12 @@ const WeatherApp = () => {
     "Gainesville", "Montreal", "Quebec City", "Vancouver", "Calgary", "Edmonton", "Ottawa", "Winnipeg",
     "Halifax", "St. John's", "Regina", "Saskatoon", "Victoria", "Fredericton", "Charlottetown", "Whitehorse",
     "Farmington Hills", "West Bloomfield", "Troy", "Novi", "Royal Oak", "Birmingham", "Southfield", "Livonia",
-    "Salvador", "Betis", "Girona", "Vigo", "Granada", "Alicante", "Cordoba", "Valladolid", "Bilbao",
-    "San Sebastian", "Santander", "Oviedo", "Pamplona", "Logrono", "Zaragoza", "Villereal", "Malaga",
-    "Guatemala", "Tarragona", "Lleida", "Reus", "Terrassa", "Sabadell", "Badalona", "Mataro", "Gava",
-    "Nice", "Lyon", "Marseille", "Toulouse", "Bordeaux", "Nantes", "Rennes", "Lille", "Strasbourg",
-    "Hyderabad", "Goa", "Kerala", "Jaipur", "Lucknow", "Kanpur", "Nagpur", "Odisha", "Patna", "Punjab",
-    "West Bengal", "Srinagar", "Agra", "Allahabad", "Amritsar", "Bhopal", "Chandigarh", "Dehradun",
+    "Salvador", "Betis", "Girona", "Vigo", "Granada", "Alicante", "Cordoba", "Valladolid", "Bilbao", "Gaza",
+    "San Sebastian", "Santander", "Oviedo", "Pamplona", "Logrono", "Zaragoza", "Villereal", "Malaga", "Nablus",
+    "Guatemala", "Tarragona", "Lleida", "Reus", "Terrassa", "Sabadell", "Badalona", "Mataro", "Gava", "Jyväskylä",
+    "Nice", "Lyon", "Marseille", "Toulouse", "Bordeaux", "Nantes", "Rennes", "Lille", "Strasbourg", "Palestine",
+    "Hyderabad", "Goa", "Kerala", "Jaipur", "Lucknow", "Kanpur", "Nagpur", "Odisha", "Patna", "Punjab", "Bodø",
+    "West Bengal", "Srinagar", "Agra", "Allahabad", "Amritsar", "Bhopal", "Chandigarh", "Dehradun", "Beirut",
     "Busan", "Daegu", "Incheon", "Guangdong", "Daejeon", "Ulsan", "Jeju", "Sejong", "Suwon", "Goyang",
     "Jerusalem", "Tel Aviv", "Haifa", "Rishon LeZion", "Rabat", "Casablanca", "Fes", "Tangier", "Marrakesh",
     "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi",
@@ -266,6 +266,7 @@ const WeatherApp = () => {
         'PG': 'Papua New Guinea',
         'PH': 'Philippines',
         'PK': 'Pakistan',
+        'PS': 'Palestine',
         'PL': 'Poland',
         'PM': 'St. Pierre & Miquelon',
         'PN': 'Pitcairn',
@@ -490,14 +491,8 @@ const WeatherApp = () => {
         tryFetch();
     };
     
-
-
-
     let api_key = "b619c02ef0d0c5ea4a66d9ddf680e09f";
     const element = document.getElementsByClassName("cityInput");
-
-
-
     
     const whereElseInTheWorld = async () => {
         // Get the current temperature in a state that doesn't change on re-render
@@ -505,13 +500,13 @@ const WeatherApp = () => {
         let currentCity = document.getElementsByClassName("weather-location")[0].innerHTML.split(",")[0];
     
         let found = false;
-        const startTime = Date.now(); // Get the current time at the start of the loop
+        const startTime = Date.now(); 
     
         while (!found) {
             if (Date.now() - startTime > 10000) { // If more than 10 seconds have passed
                 console.log("Time's up! Displaying the original city.");
-                fetchWeatherData(currentCity); // Fetch the weather data for the original city
-                break; // Break the loop
+                fetchWeatherData(currentCity); 
+                break;
             }
     
             const randomIndex = Math.floor(Math.random() * citiesList.length);
