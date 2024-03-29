@@ -36,6 +36,7 @@ const WeatherApp = () => {
     const [isSnowing, setIsSnowing] = useState(false);
     const [isClearNight, setIsClearNight] = useState(false);
     const [starPositions, setStarPositions] = useState([]);
+    const [isFilling, setIsFilling] = useState(false);
 
 
     
@@ -86,7 +87,7 @@ const WeatherApp = () => {
     "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi",
     "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "Oklahoma",
     "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah",
-    "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming", "Alabama", "Alaska", "Arizona",
+    "Vermont", "Virginia", "West Virginia", "Wisconsin", "Wyoming", "Alabama", "Alaska", "Arizona",
     "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho",
     "Illinois", "Indiana", "Iowa", "Kansas", "Kathmandu", "Pokhara", "Biratnagar", "Birgunj", "Butwal", "Hetauda",
     "Tbilisi", "Kutaisi", "Batumi", "Rustavi", "Zugdidi", "Gori", "Poti", "Samtredia", "Telavi", "Kobuleti",
@@ -552,6 +553,7 @@ const WeatherApp = () => {
         setIsThunderstorm(false);
         setIsSnowing(false);
         setIsClearNight(false);
+        setIsFilling(false);
 
     
         try {
@@ -620,18 +622,22 @@ const WeatherApp = () => {
                     case "10d":
                         setWicon(rain_icon);
                         setIsRaining(true);
+                        setIsFilling(true);
                         break;
                     case "10n":
                         setWicon(nightrain_icon);
                         setIsRaining(true);
+                        setIsFilling(true);
                         break;
                     case "11d":
                         setWicon(thunderstorm_icon);
                         setIsRaining(true);
+                        setIsFilling(true);
                         break;
                     case "11n":
                         setWicon(nightthunderstorm_icon);
                         setIsRaining(true);
+                        setIsFilling(true);
                         break;
                     case "13d":
                         setWicon(snow_icon);
@@ -683,7 +689,7 @@ const WeatherApp = () => {
 
     return (
         <div
-        className="container"
+        className={`container ${isFilling ? 'filling' : ''}`}
         onClick={handleContainerClick}
         style={{
           backgroundImage: gradients[currentGradient]
