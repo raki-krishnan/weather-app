@@ -34,6 +34,8 @@ const WeatherApp = () => {
     const [isThunderstorm, setIsThunderstorm] = useState(false);
     const [isDrizzle, setIsDrizzle] = useState(false);
     const [isSnowing, setIsSnowing] = useState(false);
+    const [isClearNight, setIsClearNight] = useState(false);
+
     
     const citiesList = ["Tokyo", "New York", "London", "Paris", "Sydney", "Washington DC",
     "Moscow", "Cairo", "Rio de Janeiro", "Toronto", "Beijing", "Berlin", "Rome", "Madrid",
@@ -75,7 +77,7 @@ const WeatherApp = () => {
     "San Sebastian", "Santander", "Oviedo", "Pamplona", "Logrono", "Zaragoza", "Villereal", "Malaga", "Nablus",
     "Guatemala", "Tarragona", "Lleida", "Reus", "Terrassa", "Sabadell", "Badalona", "Mataro", "Gava", "Jyväskylä",
     "Nice", "Lyon", "Marseille", "Toulouse", "Bordeaux", "Nantes", "Rennes", "Lille", "Strasbourg", "Palestine",
-    "Hyderabad", "Goa", "Kerala", "Jaipur", "Lucknow", "Kanpur", "Nagpur", "Odisha", "Patna", "Punjab", "Bodø",
+    "Goa", "Kerala", "Jaipur", "Lucknow", "Kanpur", "Nagpur", "Odisha", "Patna", "Punjab", "Bodø",
     "West Bengal", "Srinagar", "Agra", "Allahabad", "Amritsar", "Bhopal", "Chandigarh", "Dehradun", "Beirut",
     "Busan", "Daegu", "Incheon", "Guangdong", "Daejeon", "Ulsan", "Jeju", "Sejong", "Suwon", "Goyang",
     "Jerusalem", "Tel Aviv", "Haifa", "Rishon LeZion", "Rabat", "Casablanca", "Fes", "Tangier", "Marrakesh",
@@ -427,6 +429,7 @@ const WeatherApp = () => {
         }
         setTemperature(newTemp);
     };
+
     
     useEffect(() => {
         loadCities();
@@ -458,8 +461,9 @@ const WeatherApp = () => {
 
     const selectCity = (city, event) => {
         event.stopPropagation();
-        setSearchTerm(city);
-        setFilteredCities([]);
+        fetchWeatherData(city);
+        setSearchTerm(''); // Clear the input field after selecting a city
+        setFilteredCities([]); // Clear the suggestions
     };
 
     const fetchRandomWeather = () => {
@@ -539,6 +543,7 @@ const WeatherApp = () => {
         setIsRaining(false);
         setIsThunderstorm(false);
         setIsSnowing(false);
+        setIsClearNight(false);
 
     
         try {
@@ -598,6 +603,7 @@ const WeatherApp = () => {
                         break;
                     case "01n":
                         setWicon(nightclear_icon);
+                        setIsClearNight(true);
                         break;
                     case "02d":
                     case "03d":
@@ -650,10 +656,13 @@ const WeatherApp = () => {
                         setWicon(clear_icon);
                 }
             }
+            
             if (onSuccess) {
                 onSuccess(cityTemperature); 
             }
             setLoading(false); 
+            setSearchTerm('');
+            setFilteredCities([]);
         } catch (error) {
             console.error(error);
             setLoading(false);
@@ -668,6 +677,8 @@ const WeatherApp = () => {
             return;
         }
         fetchWeatherData(element[0].value);
+        setSearchTerm('');
+        setFilteredCities([]);
     };
 
     const snowFlakeStyles = () => ({
@@ -676,8 +687,23 @@ const WeatherApp = () => {
         animationDelay: `-${Math.random() * 2}s`,
     });
 
+    const starStyles = index => ({
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+        animationDuration: `${Math.random() + 1}s`, // Randomize duration between 1s and 2s
+        animationDelay: `${Math.random()}s` // Randomize delay up to 1s
+    });
+
+
+
     return (
-        <div className="container" onClick={handleContainerClick} style={{ backgroundImage: gradients[currentGradient] }}>
+        <div
+        className="container"
+        onClick={handleContainerClick}
+        style={{
+          backgroundImage: gradients[currentGradient]
+        }}
+        >
             {loading && <div className="loading">Loading...</div>}
             {isRaining && Array.from({ length: 20 }).map((_, index) => (
                 <div
@@ -718,6 +744,9 @@ const WeatherApp = () => {
                     className="snowflake"
                     style={snowFlakeStyles()}
                 />
+            ))}
+            {isClearNight && Array.from({ length: 100 }).map((_, index) => (
+                <div key={index} className="star" style={starStyles(index)} />
             ))}
             <div className="top-bar">
                 <div className="search-container">
