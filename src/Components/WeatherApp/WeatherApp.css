@@ -4,7 +4,7 @@
 .where-else,
 .suggestions-container,
 .unit-button {
-    z-index: 10; /* This should be higher than any other elements within the container */
+    z-index: 10;
 }
 
 .container {
@@ -262,7 +262,7 @@
 @keyframes raindrop {
     0% { opacity: 0; top: -10%; }
     30% { opacity: 0.6; } 
-    100% { opacity: 0; top: 110%; } /* Let it fall further past 100% */
+    100% { opacity: 0; top: 110%; }
 }
 
 .raindrop {
@@ -292,16 +292,16 @@
 }
 
 .heavy-raindrop {
-    width: 5px; /* Slightly wider for more visual impact */
-    height: 22px; /* Slightly longer for a more pronounced effect */
-    animation: heavy-rain 0.3s linear infinite; /* Keep the animation fast */
-    background-color: #0af; /* Adjust color if needed */
+    width: 5px;
+    height: 22px; 
+    animation: heavy-rain 0.3s linear infinite; 
+    background-color: #0af; 
 }
 
 @keyframes heavy-rain {
     0% { opacity: 0; top: -10%; }
     30% { opacity: 0.8; }
-    100% { opacity: 0; top: 110%; } /* Ensure it falls past the viewport */
+    100% { opacity: 0; top: 110%; } 
 }
   
 
@@ -357,7 +357,7 @@
       height: 0;
     }
     to {
-      height: 100%; /* Adjust the final height as needed */
+      height: 100%; 
     }
 }
 
@@ -367,9 +367,9 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 0; /* Start with no height */
+    height: 0; 
     background: rgba(0, 162, 232, 0.5);
-    transition: height 120s; 
+    transition: height 100s; 
 }
 
 .container.filling::before {
@@ -407,11 +407,11 @@
 .splash::after {
     content: '';
     position: absolute;
-    bottom: 5px; /* Position where the raindrop hits the surface */
+    bottom: 5px; 
     left: 50%;
     transform: translateX(-50%);
     background-color: #0af;
     border-radius: 50%;
-    z-index: 1; /* Below the filling water but above other content */
+    z-index: 1; 
     animation: splash 0.5s ease-out forwards;
 }

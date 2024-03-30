@@ -46,7 +46,7 @@ const WeatherApp = () => {
     "Moscow", "Cairo", "Rio de Janeiro", "Toronto", "Beijing", "Berlin", "Rome", "Madrid",
     "Dubai", "Seoul", "Istanbul", "Mumbai", "Bangkok", "Los Angeles", "Chicago", "Miami",
     "Las Vegas", "San Francisco", "Washington", "Boston", "Seattle", "Dallas", "Houston",
-    "Atlanta", "Philadelphia", "Phoenix", "Denver", "Minneapolis", "Detroit", "Honolulu",
+    "Atlanta", "Philadelphia", "Phoenix", "Denver", "Minneapolis", "Detroit", "Honolulu", "Skopje",
     "Anchorage", "Mexico City", "Buenos Aires", "Sao Paulo", "Cape Town", "Johannesburg", "Bern",
     "Nairobi", "Copenhagen", "Stockholm", "Oslo", "Helsinki", "Warsaw", "Prague", "Vienna", "Kismayo",
     "Budapest", "Athens", "Melbourne", "Edinburgh", "St. Petersburg", "Kiev", "Minsk", "Pretoria",
@@ -55,7 +55,7 @@ const WeatherApp = () => {
     "San Diego", "San Antonio", "San Jose", "New Orleans", "Portland", "Salt Lake City", "Stavanger",
     "Barcelona", "Venice", "Milan", "Amsterdam", "Brussels", "Dublin", "Lisbon", "Bucharest", "Arendal",
     "Shanghai", "Hong Kong", "Singapore", "Kuala Lumpur", "Jakarta", "Manila", "Hanoi", "Tunis",
-    "Normandy", "Taipei", "Auckland", "Wellington", "Christchurch", "Brisbane", "Perth",
+    "Normandy", "Taipei", "Auckland", "Wellington", "Christchurch", "Brisbane", "Perth", "Kočani",
     "Adelaide", "Canberra", "Hobart", "Darwin", "Alice Springs", "Cairns", "Gold Coast", "Puducherry",
     "Townsville", "Mackay", "Rockhampton", "Bundaberg", "Hervey Bay", "Fraser Island", "Palm",
     "Luzhou", "Chengdu", "Chongqing", "Wuhan", "Nanjing", "Hangzhou", "Puyang", "Suzhou", "Reykjavik",
@@ -243,6 +243,7 @@ const WeatherApp = () => {
         'MD': 'Moldova',
         'MG': 'Madagascar',
         'MH': 'Marshall Islands',
+        'MK': 'Macedonia',
         'ML': 'Mali',
         'MN': 'Mongolia',
         'MM': 'Myanmar',
@@ -607,7 +608,6 @@ const WeatherApp = () => {
         setIsSnowing(false);
         setIsClearNight(false);
         setIsFilling(false);
-
     
         try {
             const response = await fetch(url);
@@ -706,7 +706,7 @@ const WeatherApp = () => {
                         break;
                     default:
                         console.log('Default case hit, setting to cloud_icon');
-                        setWicon(clear_icon);
+                        setWicon(cloud_icon);
                 }
             }
             
@@ -736,7 +736,7 @@ const WeatherApp = () => {
 
     const snowFlakeStyles = () => ({
         left: `${Math.random() * 100}%`,
-        animationDuration: `${3 + Math.random() * 2}s`, // Longer duration for snowflakes
+        animationDuration: `${3 + Math.random() * 2}s`,
         animationDelay: `-${Math.random() * 2}s`,
     });
 
@@ -749,8 +749,6 @@ const WeatherApp = () => {
         }}
         >
             {loading && <div className="loading">Loading...</div>}
-    
-                {/* Render raindrops */}
                 {raindrops.map((drop) => (
                 <div
                     key={drop.id}
@@ -762,8 +760,6 @@ const WeatherApp = () => {
                     }}
                 />
                 ))}
-                
-                {/* Render splashes */}
                 {splashes.map((splash) => (
                 <div
                     key={splash.id}
@@ -795,13 +791,13 @@ const WeatherApp = () => {
                     }}
                 />
             ))}
-            {isThunderstorm && Array.from({ length: 300 }).map((_, index) => ( // Increase to 300 for a thicker effect
+            {isThunderstorm && Array.from({ length: 300 }).map((_, index) => (
                 <div
                     key={index}
-                    className="heavy-raindrop" // Using the heavy-raindrop class
+                    className="heavy-raindrop" 
                     style={{
                         left: `${Math.random() * 100}%`,
-                        animationDuration: `${0.2 + Math.random() * 0.3}s`, // Keep fast fall speed
+                        animationDuration: `${0.2 + Math.random() * 0.3}s`,
                         animationDelay: `-${Math.random()}s`,
                     }}
                 />
